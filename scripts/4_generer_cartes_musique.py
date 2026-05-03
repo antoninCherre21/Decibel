@@ -22,7 +22,7 @@ font_path_title = os.path.join(project_root, "fonts", "COOPBL.TTF")
 
 for index, row in df.iterrows():
     # --- RECTO ---
-    recto = Image.open("./Recto_carteExtrait.png").convert("RGBA").resize(CARD_SIZE)
+    recto = Image.open("./img/recto_carteExtrait.png").convert("RGBA").resize(CARD_SIZE)
     
     # On doit utiliser la même logique de nommage que dans 2_generer_qrcodes.py
     titre_safe = "".join(x for x in str(row['Titre']) if x.isalnum() or x in [' ', '-', '_']).strip()

@@ -42,6 +42,9 @@ def main():
     df_source = pd.read_csv(SOURCE_FILE)
     print(f"Chargement de {len(df_source)} titres à traiter depuis {SOURCE_FILE}...")
 
+    # Sleep for user convenience
+    time.sleep(1)
+
     # On travaille sur une liste d'index pour pouvoir modifier le dataframe source sans casser la boucle
     indices = list(df_source.index)
 
@@ -92,17 +95,19 @@ def main():
                 # Si les années correspondent, on vérifie si le jour est le 1er du mois (souvent une date par défaut)
                 if date_itunes_full.endswith("-01"):
                     print(f"⚠️  DATE PAR DÉFAUT SUSPECTE (Jour 01) détectée !")
-                    print(f"   iTunes propose : {date_itunes_full}")
-                    print(f"   Voulez-vous garder cette date ou la modifier ?")
-                    print(f"   1. Garder ({date_itunes_full})")
-                    print(f"   2. Saisir manuellement")
+                    print(f"   1. Garder CSV ({date_csv_raw})")
+                    print(f"   2. Garder iTunes ({date_itunes_full})")
+                    print(f"   3. Saisir manuellement")
                     
                     while True:
-                        choix_jour = input("   -> Quel choix (1/2) ? ")
+                        choix_jour = input("   -> Quel choix (1/2/3) ? ")
                         if choix_jour == '1':
+                            final_date = date_csv_raw
+                            break
+                        elif choix_jour == '1':
                             final_date = date_itunes_full
                             break
-                        elif choix_jour == '2':
+                        elif choix_jour == '3':
                             final_date = input("   -> Entrez la date (YYYY-MM-DD) : ")
                             break
                 else:
@@ -151,7 +156,7 @@ def main():
         # Pause pour respecter l'API Apple
         time.sleep(0.5)
 
-    print("\nTraitement terminé ! Les éléments restants dans 'decibel_playlist.csv' sont ceux en échec.")
+    print(f"\nTraitement terminé ! Les éléments restants dans '{SOURCE_FILE}' sont ceux en échec.")
 
 if __name__ == "__main__":
     main()
