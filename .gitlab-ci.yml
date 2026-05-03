@@ -1,0 +1,8 @@
+stages:
+  - test
+
+dummy_test:
+  stage: test
+  script:
+    - echo "This is a dummy test"
+    - exit 0
