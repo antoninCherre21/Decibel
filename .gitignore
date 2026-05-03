@@ -1,8 +1,6 @@
 # temporary files
 temp_pochettes/
 erreurs.txt
-qrcodes_finaux/
-cartes_musiques/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

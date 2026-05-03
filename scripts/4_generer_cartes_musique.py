@@ -1,8 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from datetime import datetime
 import pandas as pd
-import requests
-from io import BytesIO
 import os
 import shutil
 
@@ -43,9 +41,14 @@ for index, row in df.iterrows():
         7: 'juillet', 8: 'aout', 9: 'septembre', 10: 'octobre', 11: 'novembre', 12: 'decembre'
     }
     
-    # Téléchargement pochette
-    resp = requests.get(row['artwork_url'])
-    pochette = Image.open(BytesIO(resp.content)).convert("RGBA")
+    # Chargement pochette locale
+    # artwork_url contient maintenant un chemin local depuis la racine, ex: ./pochettes/...
+    pochette_path = os.path.join(project_root, str(row['artwork_url']).replace('./', ''))
+    try:
+        pochette = Image.open(pochette_path).convert("RGBA")
+    except Exception as e:
+        print(f"Pochette introuvable pour {row['Titre']}, ignorée. ({e})")
+        continue
     
     # Redimensionnement intelligent (Crop-to-fill)
     # On veut remplir un carré de CARD_SIZE (945x945)

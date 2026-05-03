@@ -7,7 +7,7 @@ import datetime
 
 # Configuration des fichiers
 SOURCE_FILE = "./scripts/musiques_a_ajouter.csv"
-COMPLETED_FILE = "./decibel_playlist.csv"
+COMPLETED_FILE = "./scripts/decibel_playlist_prov.csv"
 
 def get_itunes_info(artist, title):
     """Recherche les infos sur iTunes API"""

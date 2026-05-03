@@ -3,7 +3,7 @@
 - couleur sur les cartes cahcnes?
 
 
-
+verifier les musique comme bolide allement, ne doit pas etre explicit.
 
 # TO VERIFY
 
