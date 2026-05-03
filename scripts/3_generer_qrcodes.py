@@ -124,7 +124,8 @@ else:
 print("Début de la génération des QR Codes...")
 
 for index, row in df.iterrows():
-    if pd.notna(row.get('preview_url')) and row.get('preview_url') != "":
+    if 'ID' in row and pd.notna(row['ID']):
+        music_id = int(row['ID'])
         try:
             # A. Création du QR Code (Style Arrondi)
             qr = qrcode.QRCode(
@@ -133,7 +134,8 @@ for index, row in df.iterrows():
                 box_size=10,
                 border=1
             )
-            qr.add_data(row['preview_url'])
+            qr_data = f"https://antoninCherre21.github.io/Decibel/?id={music_id}"
+            qr.add_data(qr_data)
             qr.make(fit=True)
             
             # Détermination de la couleur en fonction de la difficulté
@@ -184,12 +186,12 @@ for index, row in df.iterrows():
             qr_img.paste(logo_resized, (pos_x, pos_y), mask=logo_resized)
 
             # C. Sauvegarde
-            # Nom de fichier : qr_{index}_{titre_simplifié}.png
-            titre_safe = "".join(x for x in str(row.get('Titre', f'track_{index}')) if x.isalnum() or x in [' ', '-', '_']).strip()
+            # Nom de fichier : qr_{music_id}_{titre_simplifié}.png
+            titre_safe = "".join(x for x in str(row.get('Titre', f'track_{music_id}')) if x.isalnum() or x in [' ', '-', '_']).strip()
             # Limite la longueur du nom de fichier pour éviter les erreurs système
             titre_safe = titre_safe[:50] 
             
-            filename = f"qr_{index}_{titre_safe}.png"
+            filename = f"qr_{music_id}_{titre_safe}.png"
             qr_img.save(os.path.join(output_dir, filename))
             
             if index % 50 == 0:

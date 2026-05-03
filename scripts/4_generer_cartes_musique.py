@@ -21,17 +21,20 @@ font_path = os.path.join(project_root, "fonts", "KeeponTruckin.ttf")
 font_path_title = os.path.join(project_root, "fonts", "COOPBL.TTF")
 
 for index, row in df.iterrows():
+    if 'ID' not in row or pd.isna(row['ID']):
+        continue
+    music_id = int(row['ID'])
     # --- RECTO ---
     recto = Image.open("./img/recto_carteExtrait.png").convert("RGBA").resize(CARD_SIZE)
     
-    # On doit utiliser la même logique de nommage que dans 2_generer_qrcodes.py
+    # On doit utiliser la même logique de nommage que dans 3_generer_qrcodes.py
     titre_safe = "".join(x for x in str(row['Titre']) if x.isalnum() or x in [' ', '-', '_']).strip()
     titre_safe = titre_safe[:50]
-    qr_path = f"./qrcodes_finaux/qr_{index}_{titre_safe}.png"
+    qr_path = f"./qrcodes_finaux/qr_{music_id}_{titre_safe}.png"
     if os.path.exists(qr_path):
         qr_img = Image.open(qr_path).convert("RGBA").resize((330, 330))
         recto.paste(qr_img, (CARD_SIZE[0]//2 - 165, CARD_SIZE[1]//2 - 165), qr_img)
-    recto.save(f"{output_dir}/{index}_recto_{row['Titre']}.png")
+    recto.save(f"{output_dir}/{music_id}_recto_{row['Titre']}.png")
 
     # --- VERSO ---
 
@@ -42,8 +45,8 @@ for index, row in df.iterrows():
     }
     
     # Chargement pochette locale
-    # artwork_url contient maintenant un chemin local depuis la racine, ex: ./pochettes/...
-    pochette_path = os.path.join(project_root, str(row['artwork_url']).replace('./', ''))
+    # local_artwork_path contient le chemin local depuis la racine, ex: ./pochettes/...
+    pochette_path = os.path.join(project_root, str(row['local_artwork_path']).replace('./', ''))
     try:
         pochette = Image.open(pochette_path).convert("RGBA")
     except Exception as e:
@@ -248,5 +251,5 @@ for index, row in df.iterrows():
     # Artiste (sous le titre)
     draw.text((CENTRE_X, 780), row['Artiste'], fill="black", font=font_texte, anchor="mm", stroke_width=3, stroke_fill="white")
 
-    verso.save(f"./cartes_musiques/{index}_verso_{row['Titre']}.png")
-    print(f"Carte {index} terminée.")
+    verso.save(f"./cartes_musiques/{music_id}_verso_{row['Titre']}.png")
+    print(f"Carte {music_id} terminée.")

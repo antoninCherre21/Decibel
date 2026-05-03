@@ -84,6 +84,16 @@ def verify_and_correct():
             titles_str = ", ".join(titles[:5]) + ("..." if len(titles) > 5 else "")
             errors.append(f"Erreur Doublon Date ({date}): {titles_str}")
 
+    # 1b. Check ID Duplicates
+    if 'ID' in df.columns:
+        id_counts = Counter(df['ID'])
+        duplicates_id = [id_val for id_val, count in id_counts.items() if count > 1]
+        if duplicates_id:
+            for id_val in duplicates_id:
+                titles = df[df['ID'] == id_val]['Titre'].tolist()
+                titles_str = ", ".join(titles[:3]) + ("..." if len(titles) > 3 else "")
+                errors.append(f"Erreur Doublon ID ({id_val}): {titles_str}")
+
     # 2. Check Title Duplicates-
     title_counts = Counter(df['Titre'])
     duplicates_title = [title for title, count in title_counts.items() if count > 1]
@@ -99,23 +109,23 @@ def verify_and_correct():
             errors.append(f"Erreur Limite Artiste (>5): {artist} ({artist_counts[artist]} titres)")
 
     # 3b. Check Duplicate URLs (Artwork & Preview)
-    if 'artwork_url' in df.columns:
-        artwork_counts = Counter(df['artwork_url'])
+    if 'artwork_url_itunes' in df.columns:
+        artwork_counts = Counter(df['artwork_url_itunes'])
         duplicates_artwork = [url for url, count in artwork_counts.items() if count > 1 and pd.notna(url) and url != ""]
         if duplicates_artwork:
             for url in duplicates_artwork:
-                titles = df[df['artwork_url'] == url]['Titre'].tolist()
+                titles = df[df['artwork_url_itunes'] == url]['Titre'].tolist()
                 titles_str = ", ".join(titles[:3]) + ("..." if len(titles) > 3 else "")
-                errors.append(f"Erreur Doublon Artwork URL: {titles_str} ({url})")
+                errors.append(f"Erreur Doublon Artwork URL iTunes: {titles_str} ({url})")
 
-    if 'preview_url' in df.columns:
-        preview_counts = Counter(df['preview_url'])
+    if 'preview_url_itunes' in df.columns:
+        preview_counts = Counter(df['preview_url_itunes'])
         duplicates_preview = [url for url, count in preview_counts.items() if count > 1 and pd.notna(url) and url != ""]
         if duplicates_preview:
             for url in duplicates_preview:
-                titles = df[df['preview_url'] == url]['Titre'].tolist()
+                titles = df[df['preview_url_itunes'] == url]['Titre'].tolist()
                 titles_str = ", ".join(titles[:3]) + ("..." if len(titles) > 3 else "")
-                errors.append(f"Erreur Doublon Preview URL: {titles_str} ({url})")
+                errors.append(f"Erreur Doublon Preview URL iTunes: {titles_str} ({url})")
 
     # 4. Genre Verification and Correction
     def map_genre(genre):

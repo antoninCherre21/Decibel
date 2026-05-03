@@ -6,7 +6,7 @@ import os
 import datetime
 
 # Configuration des fichiers
-SOURCE_FILE = "./scripts/musiques_a_ajouter.csv"
+SOURCE_FILE = "./musiques_a_ajouter.csv"
 COMPLETED_FILE = "./scripts/decibel_playlist_prov.csv"
 
 def get_itunes_info(artist, title):
@@ -104,7 +104,7 @@ def main():
                         if choix_jour == '1':
                             final_date = date_csv_raw
                             break
-                        elif choix_jour == '1':
+                        elif choix_jour == '2':
                             final_date = date_itunes_full
                             break
                         elif choix_jour == '3':
@@ -115,8 +115,8 @@ def main():
             
             # 2. Préparation de la ligne complète
             new_row = row.to_dict()
-            new_row['preview_url'] = info['preview_url']
-            new_row['artwork_url'] = info['artwork_url']
+            new_row['preview_url_itunes'] = info['preview_url']
+            new_row['artwork_url_itunes'] = info['artwork_url']
             
             # Mise à jour des dates
             new_row['Date_Ajout'] = datetime.date.today().strftime("%Y-%m-%d")
@@ -128,8 +128,8 @@ def main():
             
             # 3. Sauvegarde dans le fichier complet (Append mode)
             # On force l'ordre des colonnes pour correspondre au fichier de destination
-            # Ordre attendu : Date_Ajout, Date_Sortie, Titre, Artiste, Genre, Difficulté, preview_url, artwork_url
-            columns_order = ['Date_Ajout', 'Date_Sortie', 'Titre', 'Artiste', 'Genre', 'Difficulté', 'preview_url', 'artwork_url']
+            # Ordre attendu : Date_Ajout, Date_Sortie, Titre, Artiste, Genre, Difficulté, preview_url_itunes, artwork_url_itunes
+            columns_order = ['Date_Ajout', 'Date_Sortie', 'Titre', 'Artiste', 'Genre', 'Difficulté', 'preview_url_itunes', 'artwork_url_itunes']
             
             df_complete_row = pd.DataFrame([new_row])
             

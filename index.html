@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Décibel - Lecture en cours...</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- PapaParse for CSV reading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Arrière-plan animé avec gradients */
+        .background-blobs {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: var(--primary);
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: var(--secondary);
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, 50px) scale(1.1);
+            }
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(139, 92, 246, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+            }
+        }
+
+        .logo-container svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+            margin-left: 5px;
+            /* Offset for the play button visual center */
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin: 0 0 10px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .spinner {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .error-msg {
+            color: #ef4444;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="glass-card">
+        <div class="logo-container">
+            <!-- Play Icon -->
+            <svg viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </div>
+        <h1 id="titleText">Décibel</h1>
+        <p id="statusText">Connexion en cours...</p>
+
+        <div class="spinner" id="spinner">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="error-msg" id="errorBox"></div>
+    </div>
+
+    <script>
+        // Configuration
+        const CSV_URL = 'decibel_playlist.csv'; // Chemin vers le CSV hébergé
+
+        // Éléments UI
+        const statusText = document.getElementById('statusText');
+        const spinner = document.getElementById('spinner');
+        const errorBox = document.getElementById('errorBox');
+        const titleText = document.getElementById('titleText');
+
+        function showError(message) {
+            spinner.style.display = 'none';
+            statusText.innerText = 'Une erreur est survenue';
+            errorBox.innerText = message;
+            errorBox.style.display = 'block';
+        }
+
+        function init() {
+            // 1. Récupération de l'ID depuis l'URL (?id=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const musicId = urlParams.get('id');
+
+            if (!musicId) {
+                statusText.innerText = 'Application prête. Scannez une carte !';
+                spinner.style.display = 'none';
+                return;
+            }
+
+            statusText.innerText = 'Recherche de l\'extrait...';
+
+            // 2. Téléchargement et parsing du CSV
+            Papa.parse(CSV_URL, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function (results) {
+                    const data = results.data;
+
+                    // 3. Recherche de la musique correspondante
+                    // L'ID dans le CSV peut être lu comme une chaîne
+                    const song = data.find(row => row.ID === musicId || row.ID === parseInt(musicId));
+
+                    if (song) {
+                        const targetUrl = song.preview_url_itunes;
+
+                        if (targetUrl && targetUrl.startsWith('http')) {
+                            statusText.innerText = `Lancement de ${song.Titre}...`;
+                            // 4. Redirection vers iTunes
+                            setTimeout(() => {
+                                window.location.href = targetUrl;
+                            }, 500); // Petite pause pour l'effet visuel
+                        } else {
+                            showError("L'extrait audio n'est pas disponible pour cette musique.");
+                        }
+                    } else {
+                        showError("Musique introuvable (ID inconnu).");
+                    }
+                },
+                error: function (err) {
+                    showError("Impossible de lire la base de données de musiques.");
+                    console.error("PapaParse error:", err);
+                }
+            });
+        }
+
+        // Lancement au chargement de la page
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
