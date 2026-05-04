@@ -7,6 +7,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PLAYLIST_PATH = os.path.join(BASE_DIR, "../decibel_playlist.csv")
 GENRES_PATH = os.path.join(BASE_DIR, "../tri_genres_musiques.csv")
 ERRORS_PATH = os.path.join(BASE_DIR, "../erreurs.txt")
+IGNORED_ERRORS_PATH = os.path.join(BASE_DIR, "../erreurs_ignorees.txt")
 STATS_PATH = os.path.join(BASE_DIR, "../statistiques.csv")
 
 def load_genre_mapping():
@@ -79,10 +80,11 @@ def verify_and_correct():
     
     if duplicates_date:
         for date in duplicates_date:
-            titles = df[df['YearMonthDay'] == date]['Titre'].tolist()
+            rows = df[df['YearMonthDay'] == date]
+            items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
             # On limite l'affichage à 5 titres pour ne pas surcharger
-            titles_str = ", ".join(titles[:5]) + ("..." if len(titles) > 5 else "")
-            errors.append(f"Erreur Doublon Date ({date}): {titles_str}")
+            items_str = ", ".join(items[:5]) + ("..." if len(items) > 5 else "")
+            errors.append(f"Erreur Doublon Date ({date}): {items_str}")
 
     # 1b. Check ID Duplicates
     if 'ID' in df.columns:
@@ -90,16 +92,19 @@ def verify_and_correct():
         duplicates_id = [id_val for id_val, count in id_counts.items() if count > 1]
         if duplicates_id:
             for id_val in duplicates_id:
-                titles = df[df['ID'] == id_val]['Titre'].tolist()
-                titles_str = ", ".join(titles[:3]) + ("..." if len(titles) > 3 else "")
-                errors.append(f"Erreur Doublon ID ({id_val}): {titles_str}")
+                rows = df[df['ID'] == id_val]
+                items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
+                items_str = ", ".join(items[:3]) + ("..." if len(items) > 3 else "")
+                errors.append(f"Erreur Doublon ID ({id_val}): {items_str}")
 
-    # 2. Check Title Duplicates-
+    # 2. Check Title Duplicates
     title_counts = Counter(df['Titre'])
     duplicates_title = [title for title, count in title_counts.items() if count > 1]
     if duplicates_title:
         for title in duplicates_title:
-            errors.append(f"Erreur Doublon Titre: {title}")
+            artists = df[df['Titre'] == title]['Artiste'].tolist()
+            artists_str = " et ".join(artists)
+            errors.append(f"Erreur Doublon Titre: {title} (par {artists_str})")
 
     # 3. Check Artist Limits (>5)
     artist_counts = Counter(df['Artiste'])
@@ -114,18 +119,20 @@ def verify_and_correct():
         duplicates_artwork = [url for url, count in artwork_counts.items() if count > 1 and pd.notna(url) and url != ""]
         if duplicates_artwork:
             for url in duplicates_artwork:
-                titles = df[df['artwork_url_itunes'] == url]['Titre'].tolist()
-                titles_str = ", ".join(titles[:3]) + ("..." if len(titles) > 3 else "")
-                errors.append(f"Erreur Doublon Artwork URL iTunes: {titles_str} ({url})")
+                rows = df[df['artwork_url_itunes'] == url]
+                items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
+                items_str = ", ".join(items[:3]) + ("..." if len(items) > 3 else "")
+                errors.append(f"Erreur Doublon Artwork URL iTunes: {items_str} ({url})")
 
     if 'preview_url_itunes' in df.columns:
         preview_counts = Counter(df['preview_url_itunes'])
         duplicates_preview = [url for url, count in preview_counts.items() if count > 1 and pd.notna(url) and url != ""]
         if duplicates_preview:
             for url in duplicates_preview:
-                titles = df[df['preview_url_itunes'] == url]['Titre'].tolist()
-                titles_str = ", ".join(titles[:3]) + ("..." if len(titles) > 3 else "")
-                errors.append(f"Erreur Doublon Preview URL iTunes: {titles_str} ({url})")
+                rows = df[df['preview_url_itunes'] == url]
+                items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
+                items_str = ", ".join(items[:3]) + ("..." if len(items) > 3 else "")
+                errors.append(f"Erreur Doublon Preview URL iTunes: {items_str} ({url})")
 
     # 4. Genre Verification and Correction
     def map_genre(genre):
@@ -156,11 +163,34 @@ def verify_and_correct():
     # On met à jour la colonne Genre avec les IDs
     df['Genre'] = df['Genre_ID']
     
+    # Lecture des erreurs ignorées
+    ignored_errors = set()
+    if os.path.exists(IGNORED_ERRORS_PATH):
+        with open(IGNORED_ERRORS_PATH, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    ignored_errors.add(line)
+
+    # Filtrage des erreurs
+    final_errors = [err for err in errors if err not in ignored_errors]
+
     # Sauvegarde des erreurs
     with open(ERRORS_PATH, 'w', encoding='utf-8') as f:
-        for err in errors:
-            f.write(err + "\n")
+        f.write("--- RAPPORT D'ERREURS ---\n")
+        f.write("Si une ligne est marquée comme erreur mais n'en est pas une, copiez-collez cette ligne exacte dans le fichier 'erreurs_ignorees.txt' pour la masquer.\n")
+        f.write("-" * 50 + "\n\n")
+        if not final_errors:
+            f.write("Aucune erreur détectée (ou toutes les erreurs sont ignorées).\n")
+        else:
+            for err in final_errors:
+                f.write(err + "\n")
+                
     print(f"Erreurs sauvegardées dans {ERRORS_PATH}")
+    if ignored_errors:
+        masquees = len(errors) - len(final_errors)
+        if masquees > 0:
+            print(f"({masquees} erreurs masquées car présentes dans erreurs_ignorees.txt)")
 
     # 5. Statistics
     stats = []

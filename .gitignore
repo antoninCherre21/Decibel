@@ -1,6 +1,5 @@
 # temporary files
 temp_pochettes/
-erreurs.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

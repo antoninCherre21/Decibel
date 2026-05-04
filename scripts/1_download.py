@@ -92,7 +92,8 @@ def main():
                 local_audio_path = f"./fichiers_audio/{audio_filename}"
                 success_audio = True
         else:
-            success_audio = True # Déjà local ou vide
+            print(f"⚠️ URL audio invalide ou manquante pour {titre}.")
+            success_audio = False
 
         # --- Pochette ---
         if pd.notna(artwork_url) and str(artwork_url).startswith("http"):
@@ -102,7 +103,8 @@ def main():
                 local_artwork_path = f"./pochettes/{artwork_filename}"
                 success_artwork = True
         else:
-            success_artwork = True
+            print(f"⚠️ URL pochette invalide ou manquante pour {titre}.")
+            success_artwork = False
 
         # --- Finalisation de la ligne ---
         if success_audio and success_artwork:

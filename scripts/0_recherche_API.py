@@ -140,8 +140,8 @@ def main():
             
             df_complete_row = df_complete_row[columns_order]
 
-            # On écrit l'en-tête seulement si le fichier n'existe pas
-            header_mode = not os.path.exists(COMPLETED_FILE)
+            # On écrit l'en-tête seulement si le fichier n'existe pas ou est vide
+            header_mode = not os.path.exists(COMPLETED_FILE) or os.path.getsize(COMPLETED_FILE) == 0
             df_complete_row.to_csv(COMPLETED_FILE, mode='a', header=header_mode, index=False)
             
             # 4. Suppression de la ligne dans le fichier source et sauvegarde
@@ -156,7 +156,7 @@ def main():
         # Pause pour respecter l'API Apple
         time.sleep(0.5)
 
-    print(f"\nTraitement terminé ! Les éléments restants dans '{SOURCE_FILE}' sont ceux en échec.")
+    print(f"\nTraitement terminé ! Les éléments restants dans '{COMPLETED_FILE}' sont ceux en échec.")
 
 if __name__ == "__main__":
     main()
