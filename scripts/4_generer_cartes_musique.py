@@ -6,9 +6,25 @@ import shutil
 
 df = pd.read_csv("./decibel_playlist.csv")
 output_dir = "./cartes_musiques"
-if os.path.exists(output_dir):
-    shutil.rmtree(output_dir)
 os.makedirs(output_dir, exist_ok=True)
+
+# Trouver le dernier ID généré
+max_id_generated = -1
+for filename in os.listdir(output_dir):
+    if "recto" in filename or "verso" in filename:
+        try:
+            music_id = int(filename.split("_")[0])
+            if music_id > max_id_generated:
+                max_id_generated = music_id
+        except (ValueError, IndexError):
+            pass
+
+print(f"Dernière carte générée : ID {max_id_generated}. Génération à partir de l'ID {max_id_generated + 1}.")
+
+# Filtrage du DataFrame pour ne prendre que les nouveaux
+df = df[pd.notna(df['ID'])]
+df = df[df['ID'].astype(int) > max_id_generated]
+print(f"-> {len(df)} cartes à générer.")
 CARD_SIZE = (945, 945) # 8x8cm à 300 DPI
 CENTRE_X = CARD_SIZE[0] // 2
 CENTRE_Y = CARD_SIZE[1] // 2

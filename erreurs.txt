@@ -2,12 +2,4 @@
 Si une ligne est marquée comme erreur mais n'en est pas une, copiez-collez cette ligne exacte dans le fichier 'erreurs_ignorees.txt' pour la masquer.
 --------------------------------------------------
 
-Erreur Doublon Date (2013-06-17): Wake Me Up - Avicii, Animals - Martin Garrix
-Erreur Doublon Date (1982-06-25): Come On Eileen - Dexys Midnight Runners, Africa - Toto
-Erreur Doublon Date (1996-11-08): Aïcha - Khaled, Don't Speak - No Doubt
-Erreur Doublon Date (1997-06-03): Tout - Lara Fabian, Men in Black - Will Smith
-Erreur Doublon Date (2019-11-29): Jerusalema - Master KG, Blinding Lights - The Weeknd
-Erreur Doublon Date (1979-09-07): Video Killed the Radio Star - The Buggles, Message in a Bottle - The Police
-Erreur Doublon Date (2025-05-15): Mon amour - Soprano, The First Time - Damiano David
-Erreur Doublon Titre: How Deep Is Your Love (par Bee Gees et Calvin Harris)
-Erreur Doublon Artwork URL iTunes: When Love Takes Over - David Guetta ft. Kelly Rowland, Sexy Bitch - David Guetta ft. Akon (https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/0a/0c/4f/0a0c4f12-1489-3bda-ab41-7cb04f181e5f/5099990837951.jpg/600x600bb.jpg)
+Aucune erreur détectée (ou toutes les erreurs sont ignorées).

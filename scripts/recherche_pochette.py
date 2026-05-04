@@ -3,8 +3,8 @@ import os
 import shutil
 import pandas as pd
 
-def clean_filename(filename):
-    return "".join(c for c in filename if c.isalnum() or c in (' ', '.', '_', '-')).strip()
+def clean_filename(name):
+    return "".join([c for c in str(name) if c.isalnum() or c in [' ', '-', '_']]).strip().replace(' ', '_')
 
 def search_artwork():
     print("--- Recherche de Pochette iTunes et Mise à jour ---")

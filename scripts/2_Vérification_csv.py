@@ -232,6 +232,16 @@ def verify_and_correct():
     df_final = df.drop(columns=['YearMonthDay', 'Genre_ID', 'Year', 'Decade'])
     df_final.to_csv(PLAYLIST_PATH, index=False)
     print(f"Fichier {PLAYLIST_PATH} mis à jour avec les IDs de genre.")
+    
+    return final_errors
 
 if __name__ == "__main__":
-    verify_and_correct()
+    import sys
+    final_errors = verify_and_correct()
+    # Si le tableau n'est pas vide (erreurs trouvées), on sort avec un code d'erreur 1
+    if final_errors:
+        print("\n❌ Vérification échouée : des erreurs ont été trouvées (voir erreurs.txt).")
+        sys.exit(1)
+    else:
+        print("\n✅ Vérification réussie : aucune erreur.")
+        sys.exit(0)

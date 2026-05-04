@@ -29,8 +29,17 @@ def main():
         
         # Vérification si le script s'est bien terminé
         if result.returncode != 0:
-            print(f"\n❌ Erreur rencontrée lors de l'exécution de {script}.")
-            print("Arrêt du processus global.")
+            if "2_Vérification_csv.py" in script:
+                print(f"\n❌ Le script run_all a été interrompu : des erreurs ont été détectées dans la base de données !")
+                print("Consultez le fichier 'erreurs.txt' à la racine pour voir les détails.")
+                print(" -> Pour ignorer une erreur (ex: faux doublon), copiez la ligne exacte dans 'erreurs_ignorees.txt'.")
+                print(" -> Pour supprimer une musique problématique, utilisez : python scripts/supprimer_musique.py")
+                print(" -> Pour modifier une pochette erronée, utilisez : python scripts/recherche_pochette.py")
+                print("\nUne fois les erreurs corrigées ou ignorées, vous pourrez relancer 'run_all.py'.")
+            else:
+                print(f"\n❌ Erreur rencontrée lors de l'exécution de {script}.")
+                
+            print("\nArrêt du processus global.")
             sys.exit(result.returncode)
             
         print(f"\n✅ {script} terminé avec succès.")

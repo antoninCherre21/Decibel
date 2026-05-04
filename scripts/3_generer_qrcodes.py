@@ -62,12 +62,21 @@ def creer_logo_custom(size=500, color=(0, 0, 0)):
 csv_path = "./decibel_playlist.csv"
 output_dir = "qrcodes_finaux"
 
-# Nettoyage du dossier de sortie
-if os.path.exists(output_dir):
-    shutil.rmtree(output_dir)
-    print(f"Dossier '{output_dir}' nettoyé.")
-
+# Ne plus nettoyer le dossier, on veut garder les anciens
 os.makedirs(output_dir, exist_ok=True)
+
+# Trouver le dernier ID généré
+max_id_generated = -1
+for filename in os.listdir(output_dir):
+    if filename.startswith("qr_") and filename.endswith(".png"):
+        try:
+            music_id = int(filename.split("_")[1])
+            if music_id > max_id_generated:
+                max_id_generated = music_id
+        except (ValueError, IndexError):
+            pass
+
+print(f"Dernier QR code généré : ID {max_id_generated}. Génération à partir de l'ID {max_id_generated + 1}.")
 
 try:
     df = pd.read_csv(csv_path)
@@ -87,38 +96,11 @@ try:
 except Exception as e:
     print(f"Erreur chargement genres : {e}")
 
-# (Suppression de la génération globale du logo, on le fera par musique)
-
-# --- FILTRAGE PAR DATE D'AJOUT ---
-print("\n--- FILTRE DE GÉNÉRATION ---")
-print("Entrez le motif de date d'ajout pour filtrer les musiques.")
-print("Format : YYYY-MM-DD avec '*' ou '_' comme joker.")
-print("Exemples :")
-print(" - '2026-**-**' : Tout 2026")
-print(" - '2026-01-**' : Tout Janvier 2026")
-print(" - '****-**-**' : Tout (défaut)")
-date_pattern = input("Votre motif (Entrée pour tout) : ").strip()
-
-if not date_pattern:
-    date_pattern = "****-**-**"
-
-# Conversion du motif utilisateur en Regex simple
-# On remplace * et _ par . (n'importe quel caractère en regex)
-regex_pattern = date_pattern.replace("*", ".").replace("_", ".")
-# On s'assure que le motif couvre toute la chaîne (^...$)
-regex_pattern = f"^{regex_pattern}$"
-
-print(f"Filtrage avec le motif : {date_pattern}")
-
-# Filtrage du DataFrame
-# On s'assure que la colonne existe, sinon on prend tout
-if 'Date_Ajout' in df.columns:
-    # On filtre en convertissant en string et en appliquant le regex
-    df_filtered = df[df['Date_Ajout'].astype(str).str.match(regex_pattern, na=False)]
-    print(f"-> {len(df_filtered)} musiques correspondent au filtre (sur {len(df)} total).")
-    df = df_filtered
-else:
-    print("⚠️ Colonne 'Date_Ajout' introuvable. Génération pour TOUT le fichier.")
+# Filtrage du DataFrame pour ne prendre que les nouveaux
+df = df[pd.notna(df['ID'])]
+df_filtered = df[df['ID'].astype(int) > max_id_generated]
+print(f"-> {len(df_filtered)} musiques à générer (sur {len(df)} total).")
+df = df_filtered
 
 
 print("Début de la génération des QR Codes...")
