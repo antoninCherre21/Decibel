@@ -113,6 +113,14 @@ for index, row in df.iterrows():
     if row['Titre'] == "Conmigo" and row['Artiste'] == "Kendji Girac":
         ratio *= 1.10
 
+    # Zoom spécifique pour Andalouse
+    if row['Titre'] == "Andalouse" and row['Artiste'] == "Kendji Girac":
+        ratio *= 1.10
+
+    # Zoom spécifique pour U Can't Touch This, MC Hammer
+    if row['Titre'] == "U Can't Touch This" and row['Artiste'] == "MC Hammer":
+        ratio *= 1.05
+
     # Zoom spécifique pour Celebration
     if row['Titre'] == "Celebration" and row['Artiste'] == "Kool & The Gang":
         ratio *= 1.10
@@ -148,6 +156,15 @@ for index, row in df.iterrows():
     # Zoom spécifique pour Autobahn,Kraftwerk
     if row['Titre'] == "Autobahn" and row['Artiste'] == "Kraftwerk":
         ratio *= 1.10
+
+    # Zoom spécifique pour Derrière le Brouillard, Grand Corps Malade & Louane
+    if row['Titre'] == "Derrière le Brouillard" and row['Artiste'] == "Grand Corps Malade & Louane":
+        ratio *= 1.15
+
+    # Zoom spécifique pour Steal My Girl, One Direction
+    if row['Titre'] == "Steal My Girl" and row['Artiste'] == "One Direction":
+        ratio *= 1.08
+    
 
     new_width = int(img_width * ratio)
     new_height = int(img_height * ratio)
