@@ -1,5 +1,7 @@
 # temporary files
 temp_pochettes/
+modes/*/assets/fichiers_audio/
+modes/*/assets/pochettes/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
