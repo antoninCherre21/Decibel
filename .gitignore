@@ -10,6 +10,7 @@ modes/*/assets/pochettes/
 # Exports générés (QR codes et cartes) — régénérables à la demande
 modes/*/exports/qrcodes/
 modes/*/exports/cartes/
+modes/*/cartes_chances/
 
 # Fichier temporaire de travail entre le script 0 et le script 1
 # ATTENTION : ce fichier est intermédiaire, gardé en local pour sécurité
