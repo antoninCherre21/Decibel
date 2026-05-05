@@ -1,5 +1,5 @@
 --- RAPPORT D'ERREURS ---
-Si une ligne est marquée comme erreur mais n'en est pas une, copiez-collez cette ligne exacte dans le fichier 'erreurs_ignorees.txt' pour la masquer.
+Pour ignorer une erreur, copiez-collez la ligne exacte dans 'erreurs_ignorees.txt'.
 --------------------------------------------------
 
 Aucune erreur détectée (ou toutes les erreurs sont ignorées).

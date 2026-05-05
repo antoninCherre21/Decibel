@@ -1,452 +1,442 @@
 [
     {
-        "Type":"Année",
-        "Valeur":"1111",
-        "Nombre":1
+        "Type": "Année",
+        "Valeur": "1954",
+        "Nombre": 1
     },
     {
-        "Type":"Année",
-        "Valeur":"1954",
-        "Nombre":1
+        "Type": "Année",
+        "Valeur": "1956",
+        "Nombre": 2
     },
     {
-        "Type":"Année",
-        "Valeur":"1956",
-        "Nombre":2
+        "Type": "Année",
+        "Valeur": "1957",
+        "Nombre": 1
     },
     {
-        "Type":"Année",
-        "Valeur":"1957",
-        "Nombre":1
+        "Type": "Année",
+        "Valeur": "1958",
+        "Nombre": 1
     },
     {
-        "Type":"Année",
-        "Valeur":"1958",
-        "Nombre":1
+        "Type": "Année",
+        "Valeur": "1959",
+        "Nombre": 1
     },
     {
-        "Type":"Année",
-        "Valeur":"1959",
-        "Nombre":1
+        "Type": "Année",
+        "Valeur": "1960",
+        "Nombre": 4
     },
     {
-        "Type":"Année",
-        "Valeur":"1960",
-        "Nombre":4
+        "Type": "Année",
+        "Valeur": "1961",
+        "Nombre": 4
     },
     {
-        "Type":"Année",
-        "Valeur":"1961",
-        "Nombre":4
+        "Type": "Année",
+        "Valeur": "1962",
+        "Nombre": 3
     },
     {
-        "Type":"Année",
-        "Valeur":"1962",
-        "Nombre":3
+        "Type": "Année",
+        "Valeur": "1963",
+        "Nombre": 4
     },
     {
-        "Type":"Année",
-        "Valeur":"1963",
-        "Nombre":4
+        "Type": "Année",
+        "Valeur": "1964",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"1964",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "1965",
+        "Nombre": 10
     },
     {
-        "Type":"Année",
-        "Valeur":"1965",
-        "Nombre":10
+        "Type": "Année",
+        "Valeur": "1966",
+        "Nombre": 5
     },
     {
-        "Type":"Année",
-        "Valeur":"1966",
-        "Nombre":5
+        "Type": "Année",
+        "Valeur": "1967",
+        "Nombre": 10
     },
     {
-        "Type":"Année",
-        "Valeur":"1967",
-        "Nombre":10
+        "Type": "Année",
+        "Valeur": "1968",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1968",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1969",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"1969",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "1970",
+        "Nombre": 4
     },
     {
-        "Type":"Année",
-        "Valeur":"1970",
-        "Nombre":4
+        "Type": "Année",
+        "Valeur": "1971",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1971",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1972",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1972",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1973",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"1973",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "1974",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1974",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1975",
+        "Nombre": 5
     },
     {
-        "Type":"Année",
-        "Valeur":"1975",
-        "Nombre":5
+        "Type": "Année",
+        "Valeur": "1976",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"1976",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "1977",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"1977",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "1978",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"1978",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "1979",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1979",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1980",
+        "Nombre": 5
     },
     {
-        "Type":"Année",
-        "Valeur":"1980",
-        "Nombre":5
+        "Type": "Année",
+        "Valeur": "1981",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"1981",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "1982",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1982",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1983",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"1983",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "1984",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"1984",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "1985",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"1985",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "1986",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1986",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1987",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"1987",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "1988",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1988",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1989",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1989",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1990",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"1990",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "1991",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"1991",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "1992",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"1992",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "1993",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1993",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1994",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1994",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1995",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"1995",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "1996",
+        "Nombre": 5
     },
     {
-        "Type":"Année",
-        "Valeur":"1996",
-        "Nombre":5
+        "Type": "Année",
+        "Valeur": "1997",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"1997",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "1998",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"1998",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "1999",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"1999",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "2000",
+        "Nombre": 11
     },
     {
-        "Type":"Année",
-        "Valeur":"2000",
-        "Nombre":11
+        "Type": "Année",
+        "Valeur": "2001",
+        "Nombre": 5
     },
     {
-        "Type":"Année",
-        "Valeur":"2001",
-        "Nombre":5
+        "Type": "Année",
+        "Valeur": "2002",
+        "Nombre": 10
     },
     {
-        "Type":"Année",
-        "Valeur":"2002",
-        "Nombre":10
+        "Type": "Année",
+        "Valeur": "2003",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"2003",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "2004",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"2004",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "2005",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"2005",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "2006",
+        "Nombre": 4
     },
     {
-        "Type":"Année",
-        "Valeur":"2006",
-        "Nombre":4
+        "Type": "Année",
+        "Valeur": "2007",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"2007",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "2008",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"2008",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "2009",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"2009",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "2010",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"2010",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "2011",
+        "Nombre": 10
     },
     {
-        "Type":"Année",
-        "Valeur":"2011",
-        "Nombre":10
+        "Type": "Année",
+        "Valeur": "2012",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"2012",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "2013",
+        "Nombre": 14
     },
     {
-        "Type":"Année",
-        "Valeur":"2013",
-        "Nombre":14
+        "Type": "Année",
+        "Valeur": "2014",
+        "Nombre": 13
     },
     {
-        "Type":"Année",
-        "Valeur":"2014",
-        "Nombre":13
+        "Type": "Année",
+        "Valeur": "2015",
+        "Nombre": 12
     },
     {
-        "Type":"Année",
-        "Valeur":"2015",
-        "Nombre":12
+        "Type": "Année",
+        "Valeur": "2016",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"2016",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "2017",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"2017",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "2018",
+        "Nombre": 11
     },
     {
-        "Type":"Année",
-        "Valeur":"2018",
-        "Nombre":11
+        "Type": "Année",
+        "Valeur": "2019",
+        "Nombre": 13
     },
     {
-        "Type":"Année",
-        "Valeur":"2019",
-        "Nombre":13
+        "Type": "Année",
+        "Valeur": "2020",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"2020",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "2021",
+        "Nombre": 7
     },
     {
-        "Type":"Année",
-        "Valeur":"2021",
-        "Nombre":7
+        "Type": "Année",
+        "Valeur": "2022",
+        "Nombre": 9
     },
     {
-        "Type":"Année",
-        "Valeur":"2022",
-        "Nombre":9
+        "Type": "Année",
+        "Valeur": "2023",
+        "Nombre": 6
     },
     {
-        "Type":"Année",
-        "Valeur":"2023",
-        "Nombre":6
+        "Type": "Année",
+        "Valeur": "2024",
+        "Nombre": 10
     },
     {
-        "Type":"Année",
-        "Valeur":"2024",
-        "Nombre":10
+        "Type": "Année",
+        "Valeur": "2025",
+        "Nombre": 8
     },
     {
-        "Type":"Année",
-        "Valeur":"2025",
-        "Nombre":8
+        "Type": "Année",
+        "Valeur": "2026",
+        "Nombre": 1
     },
     {
-        "Type":"Année",
-        "Valeur":"2026",
-        "Nombre":1
+        "Type": "Décennie",
+        "Valeur": "1950s",
+        "Nombre": 6
     },
     {
-        "Type":"Décennie",
-        "Valeur":"1110s",
-        "Nombre":1
+        "Type": "Décennie",
+        "Valeur": "1960s",
+        "Nombre": 61
     },
     {
-        "Type":"Décennie",
-        "Valeur":"1950s",
-        "Nombre":6
+        "Type": "Décennie",
+        "Valeur": "1970s",
+        "Nombre": 64
     },
     {
-        "Type":"Décennie",
-        "Valeur":"1960s",
-        "Nombre":61
+        "Type": "Décennie",
+        "Valeur": "1980s",
+        "Nombre": 69
     },
     {
-        "Type":"Décennie",
-        "Valeur":"1970s",
-        "Nombre":64
+        "Type": "Décennie",
+        "Valeur": "1990s",
+        "Nombre": 71
     },
     {
-        "Type":"Décennie",
-        "Valeur":"1980s",
-        "Nombre":69
+        "Type": "Décennie",
+        "Valeur": "2000s",
+        "Nombre": 75
     },
     {
-        "Type":"Décennie",
-        "Valeur":"1990s",
-        "Nombre":71
+        "Type": "Décennie",
+        "Valeur": "2010s",
+        "Nombre": 106
     },
     {
-        "Type":"Décennie",
-        "Valeur":"2000s",
-        "Nombre":75
+        "Type": "Décennie",
+        "Valeur": "2020s",
+        "Nombre": 48
     },
     {
-        "Type":"Décennie",
-        "Valeur":"2010s",
-        "Nombre":106
+        "Type": "Genre ID",
+        "Valeur": 3,
+        "Nombre": 73
     },
     {
-        "Type":"Décennie",
-        "Valeur":"2020s",
-        "Nombre":48
+        "Type": "Genre ID",
+        "Valeur": 4,
+        "Nombre": 55
     },
     {
-        "Type":"Genre ID",
-        "Valeur":1,
-        "Nombre":221
+        "Type": "Genre ID",
+        "Valeur": 1,
+        "Nombre": 221
     },
     {
-        "Type":"Genre ID",
-        "Valeur":2,
-        "Nombre":107
+        "Type": "Genre ID",
+        "Valeur": 2,
+        "Nombre": 107
     },
     {
-        "Type":"Genre ID",
-        "Valeur":3,
-        "Nombre":73
+        "Type": "Genre ID",
+        "Valeur": 5,
+        "Nombre": 44
     },
     {
-        "Type":"Genre ID",
-        "Valeur":4,
-        "Nombre":56
+        "Type": "Difficulté",
+        "Valeur": "Moyen",
+        "Nombre": 174
     },
     {
-        "Type":"Genre ID",
-        "Valeur":5,
-        "Nombre":44
+        "Type": "Difficulté",
+        "Valeur": "Facile",
+        "Nombre": 296
     },
     {
-        "Type":"Difficulté",
-        "Valeur":"Facile",
-        "Nombre":297
-    },
-    {
-        "Type":"Difficulté",
-        "Valeur":"Moyen",
-        "Nombre":174
-    },
-    {
-        "Type":"Difficulté",
-        "Valeur":"Difficile",
-        "Nombre":30
+        "Type": "Difficulté",
+        "Valeur": "Difficile",
+        "Nombre": 30
     }
 ]
