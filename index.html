@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Décibel - Lecture en cours...</title>
+    <!-- PWA Meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-512x512.png">
+    
+    <title>Décibel - Scanner</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <!-- PapaParse for CSV reading -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- HTML5 QRCode Scanner -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
 
     <style>
         :root {
@@ -19,287 +25,345 @@
             --text-muted: #94a3b8;
         }
 
-        body,
-        html {
+        body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
         }
 
-        /* Arrière-plan animé avec gradients */
-        .background-blobs {
+        /* Loading Screen */
+        #loading-screen {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+            z-index: 50;
+        }
+
+        /* Scanner Screen */
+        #scanner-screen {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            z-index: 0;
+            display: none;
+            flex-direction: column;
         }
 
-        .blob {
-            position: absolute;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: float 10s infinite ease-in-out alternate;
+        #reader {
+            width: 100%;
+            flex: 1;
+            background: black;
         }
-
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
+        
+        /* Personnalisation du scanner HTML5-qrcode */
+        #reader__dashboard_section_csr span { color: var(--text-main) !important; }
+        #reader__dashboard_section_swaplink { color: var(--primary) !important; }
+        #reader button {
             background: var(--primary);
-            animation-delay: 0s;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            margin: 10px;
+            cursor: pointer;
         }
 
-        .blob-2 {
-            bottom: -10%;
-            right: -10%;
-            width: 60vw;
-            height: 60vw;
-            background: var(--secondary);
-            animation-delay: -5s;
+        /* Player Screen */
+        #player-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 40;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
         }
 
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            100% {
-                transform: translate(30px, 50px) scale(1.1);
-            }
-        }
-
-        /* Glassmorphism Card */
         .glass-card {
-            position: relative;
-            z-index: 10;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            padding: 40px;
-            text-align: center;
-            width: 90%;
+            padding: 30px;
+            width: 100%;
             max-width: 400px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.8s ease-out forwards;
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .logo-container {
-            width: 80px;
-            height: 80px;
+        .cover-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 16px;
             margin: 0 auto 20px;
-            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            object-fit: cover;
+            display: block;
+        }
+
+        .song-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 5px; }
+        .song-artist { font-size: 1.1rem; color: var(--text-muted); margin: 0 0 20px; }
+
+        audio {
+            width: 100%;
+            outline: none;
+            border-radius: 30px;
+        }
+
+        .btn-next {
+            margin-top: 30px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
-            }
-
-            70% {
-                box-shadow: 0 0 0 20px rgba(139, 92, 246, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
-            }
-        }
-
-        .logo-container svg {
-            width: 40px;
-            height: 40px;
-            fill: white;
-            margin-left: 5px;
-            /* Offset for the play button visual center */
-        }
-
-        h1 {
-            font-size: 2rem;
-            margin: 0 0 10px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        p {
-            color: var(--text-muted);
-            margin: 0;
+            color: white;
+            border: none;
+            padding: 15px 30px;
             font-size: 1.1rem;
-            line-height: 1.5;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            transition: transform 0.2s;
         }
+        .btn-next:active { transform: scale(0.95); }
 
         .spinner {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
+            display: flex; gap: 8px; margin-top: 20px;
         }
-
         .dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--text-main);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
+            width: 12px; height: 12px; background-color: var(--primary);
+            border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both;
         }
-
-        .dot:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce {
-
-            0%,
-            80%,
-            100% {
-                transform: scale(0);
-            }
-
-            40% {
-                transform: scale(1);
-            }
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
 
-        .error-msg {
-            color: #ef4444;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            display: none;
-            background: rgba(239, 68, 68, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
     </style>
 </head>
-
 <body>
 
-    <div class="background-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
+    <header>
+        <h1>Décibel</h1>
+    </header>
 
-    <div class="glass-card">
-        <div class="logo-container">
-            <!-- Play Icon -->
-            <svg viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-            </svg>
-        </div>
-        <h1 id="titleText">Décibel</h1>
-        <p id="statusText">Connexion en cours...</p>
-
-        <div class="spinner" id="spinner">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+    <main>
+        <!-- 1. Écran de chargement initial -->
+        <div id="loading-screen">
+            <h2>Chargement de la base de données...</h2>
+            <div class="spinner">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <p id="loading-error" style="color: #ef4444; display: none; margin-top: 20px;"></p>
         </div>
 
-        <div class="error-msg" id="errorBox"></div>
-    </div>
+        <!-- 2. Écran du Scanner -->
+        <div id="scanner-screen">
+            <div id="reader"></div>
+        </div>
+
+        <!-- 3. Écran du Lecteur Audio -->
+        <div id="player-screen">
+            <div class="glass-card">
+                <img id="player-cover" class="cover-art" src="" alt="Pochette">
+                <h2 id="player-title" class="song-title">Titre</h2>
+                <p id="player-artist" class="song-artist">Artiste</p>
+                
+                <div id="audio-container"></div>
+                
+                <button class="btn-next" onclick="restartScanner()">Scanner une autre carte</button>
+            </div>
+        </div>
+    </main>
 
     <script>
-        // Configuration
-        const CSV_URL = 'decibel_playlist.csv'; // Chemin vers le CSV hébergé
+        // --- Variables Globales ---
+        const CSV_URL = 'decibel_playlist.csv';
+        let playlistData = [];
+        let html5QrcodeScanner = null;
 
-        // Éléments UI
-        const statusText = document.getElementById('statusText');
-        const spinner = document.getElementById('spinner');
-        const errorBox = document.getElementById('errorBox');
-        const titleText = document.getElementById('titleText');
+        // --- Éléments UI ---
+        const loadingScreen = document.getElementById('loading-screen');
+        const scannerScreen = document.getElementById('scanner-screen');
+        const playerScreen = document.getElementById('player-screen');
+        
+        const playerCover = document.getElementById('player-cover');
+        const playerTitle = document.getElementById('player-title');
+        const playerArtist = document.getElementById('player-artist');
+        const audioContainer = document.getElementById('audio-container');
+        const loadingError = document.getElementById('loading-error');
 
-        function showError(message) {
-            spinner.style.display = 'none';
-            statusText.innerText = 'Une erreur est survenue';
-            errorBox.innerText = message;
-            errorBox.style.display = 'block';
+        // --- PWA Service Worker ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
         }
 
-        function init() {
-            // 1. Récupération de l'ID depuis l'URL (?id=...)
-            const urlParams = new URLSearchParams(window.location.search);
-            const musicId = urlParams.get('id');
-
-            if (!musicId) {
-                statusText.innerText = 'Application prête. Scannez une carte !';
-                spinner.style.display = 'none';
-                return;
-            }
-
-            statusText.innerText = 'Recherche de l\'extrait...';
-
-            // 2. Téléchargement et parsing du CSV
+        // --- 1. Initialisation (Chargement du CSV) ---
+        function initApp() {
             Papa.parse(CSV_URL, {
                 download: true,
                 header: true,
                 skipEmptyLines: true,
-                complete: function (results) {
-                    const data = results.data;
-
-                    // 3. Recherche de la musique correspondante
-                    // L'ID dans le CSV peut être lu comme une chaîne
-                    const song = data.find(row => row.ID === musicId || row.ID === parseInt(musicId));
-
-                    if (song) {
-                        const targetUrl = song.preview_url_itunes;
-
-                        if (targetUrl && targetUrl.startsWith('http')) {
-                            statusText.innerText = `Lancement de ${song.Titre}...`;
-                            // 4. Redirection vers iTunes
-                            setTimeout(() => {
-                                window.location.href = targetUrl;
-                            }, 500); // Petite pause pour l'effet visuel
-                        } else {
-                            showError("L'extrait audio n'est pas disponible pour cette musique.");
-                        }
-                    } else {
-                        showError("Musique introuvable (ID inconnu).");
-                    }
+                complete: function(results) {
+                    playlistData = results.data;
+                    console.log(`Base de données chargée: ${playlistData.length} musiques.`);
+                    // Masquer le chargement et afficher le scanner
+                    loadingScreen.style.display = 'none';
+                    startScanner();
                 },
-                error: function (err) {
-                    showError("Impossible de lire la base de données de musiques.");
-                    console.error("PapaParse error:", err);
+                error: function(err) {
+                    loadingError.innerText = "Erreur de connexion à la base de données.";
+                    loadingError.style.display = "block";
+                    console.error(err);
                 }
             });
         }
 
-        // Lancement au chargement de la page
-        document.addEventListener('DOMContentLoaded', init);
+        // --- 2. Scanner ---
+        function startScanner() {
+            playerScreen.style.display = 'none';
+            scannerScreen.style.display = 'flex';
+            
+            // On vide l'audio pour éviter qu'il continue de jouer
+            audioContainer.innerHTML = '';
+
+            if (!html5QrcodeScanner) {
+                // Configuration du scanner pour utiliser la caméra arrière par défaut
+                html5QrcodeScanner = new Html5QrcodeScanner(
+                    "reader", 
+                    { fps: 10, qrbox: {width: 250, height: 250}, aspectRatio: 1.0 }, 
+                    /* verbose= */ false
+                );
+            }
+
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
+
+        function restartScanner() {
+            startScanner();
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // Un scan réussi !
+            console.log(`Scan réussi: ${decodedText}`);
+            
+            // Format attendu: "music_123" ou "movie_45"
+            if (decodedText.startsWith("music_")) {
+                const musicId = decodedText.split("_")[1];
+                
+                // Mettre le scanner en pause / l'arrêter
+                html5QrcodeScanner.clear().then(() => {
+                    playMusic(musicId);
+                }).catch(error => {
+                    console.error("Failed to clear html5QrcodeScanner. ", error);
+                    playMusic(musicId); // Fallback
+                });
+            } else {
+                // Si c'est un vieux QR code (https://...)
+                if (decodedText.includes("?id=")) {
+                    const params = new URLSearchParams(decodedText.split("?")[1]);
+                    const musicId = params.get("id");
+                    if (musicId) {
+                        html5QrcodeScanner.clear().then(() => playMusic(musicId));
+                    }
+                } else {
+                    alert("Format de QR code non reconnu pour ce jeu.");
+                }
+            }
+        }
+
+        function onScanFailure(error) {
+            // Ignoré en continu, on s'en fiche s'il ne lit rien sur le moment
+        }
+
+        // --- 3. Lecteur ---
+        function playMusic(id) {
+            scannerScreen.style.display = 'none';
+            playerScreen.style.display = 'flex';
+
+            const song = playlistData.find(row => row.ID === id || row.ID === parseInt(id));
+
+            if (song) {
+                playerTitle.innerText = song.Titre || "Titre inconnu";
+                playerArtist.innerText = song.Artiste || "Artiste inconnu";
+                playerCover.src = song.local_artwork_path || "img/icon-512x512.png"; // Fallback image
+
+                const audioSrc = song.local_preview_path;
+                const itunesSrc = song.preview_url_itunes;
+
+                audioContainer.innerHTML = `
+                    <audio controls autoplay>
+                        <source src="${audioSrc}" type="audio/mp4">
+                        <source src="${itunesSrc}" type="audio/mp4">
+                        Votre navigateur ne supporte pas la balise audio.
+                    </audio>
+                `;
+            } else {
+                playerTitle.innerText = "Erreur";
+                playerArtist.innerText = `Musique ID ${id} introuvable`;
+                playerCover.src = "img/icon-512x512.png";
+                audioContainer.innerHTML = '';
+            }
+        }
+
+        // --- Lancement ---
+        document.addEventListener('DOMContentLoaded', initApp);
+
     </script>
 </body>
-
 </html>

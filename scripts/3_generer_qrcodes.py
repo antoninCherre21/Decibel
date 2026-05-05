@@ -112,11 +112,11 @@ for index, row in df.iterrows():
             # A. Création du QR Code (Style Arrondi)
             qr = qrcode.QRCode(
                 version=None, 
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                error_correction=qrcode.constants.ERROR_CORRECT_H,
                 box_size=10,
                 border=1
             )
-            qr_data = f"https://antoninCherre21.github.io/Decibel/?id={music_id}"
+            qr_data = f"music_{music_id}"
             qr.add_data(qr_data)
             qr.make(fit=True)
             
