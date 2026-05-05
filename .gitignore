@@ -1,6 +1,25 @@
-# temporary files
+# =============================================================
+# Décibel — Fichiers spécifiques au projet
+# =============================================================
+
+# Assets générés automatiquement par les scripts (audio + pochettes)
+# Ces fichiers sont lourds, téléchargeables via les URLs dans db.json
+modes/*/assets/fichiers_audio/
+modes/*/assets/pochettes/
+
+# Exports générés (QR codes et cartes) — régénérables à la demande
+modes/*/exports/qrcodes/
+modes/*/exports/cartes/
+
+# Fichier temporaire de travail entre le script 0 et le script 1
+# ATTENTION : ce fichier est intermédiaire, gardé en local pour sécurité
+# Décommenter la ligne suivante pour l'ignorer (non recommandé) :
+# scripts/*_playlist_prov.json
+
+# Dossier temporaire de prévisualisation des pochettes
 temp_pochettes/
-modes/*/assets/
+
+# =============================================================
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
