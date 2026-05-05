@@ -72,11 +72,36 @@ def safe_filename(name: str) -> str:
     return "".join([c for c in str(name) if c.isalnum() or c in [' ', '-', '_']]).strip().replace(' ', '_')
 
 
+def get_available_modes() -> list:
+    """
+    Détecte automatiquement les modes disponibles dans le dossier modes/.
+    Fonctionne que le script soit appelé depuis la racine ou depuis scripts/.
+    """
+    # Cherche le dossier modes/ depuis le script courant
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = os.path.dirname(script_dir)  # remonte d'un niveau (scripts/ -> racine)
+    modes_dir = os.path.join(base_dir, "modes")
+    if not os.path.isdir(modes_dir):
+        return ["music"]
+    return sorted([
+        d for d in os.listdir(modes_dir)
+        if os.path.isdir(os.path.join(modes_dir, d)) and not d.startswith('.')
+    ])
+
+
 def get_mode_arg() -> str:
     """
-    Parse l'argument --mode depuis la ligne de commande. Retourne "music" par défaut.
+    Parse l'argument --mode depuis la ligne de commande.
+    Détecte automatiquement les modes disponibles et les affiche dans le --help.
     """
     import argparse
+    modes = get_available_modes()
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", type=str, default="music", help="Mode de jeu (ex: music, movies)")
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default=modes[0] if modes else "music",
+        choices=modes,
+        help=f"Mode de jeu. Disponibles : {', '.join(modes)}"
+    )
     return parser.parse_args().mode
