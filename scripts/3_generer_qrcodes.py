@@ -6,13 +6,14 @@ from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
 from qrcode.image.styles.colormasks import SolidFillColorMask
 from utils import get_mode_arg, get_paths, load_json
 
+# Correspondance nom de couleur (depuis genres.json) → valeur RGB
 COLORS_RGB = {
-    'bleu': (66, 135, 245),
+    'bleu':   (66, 135, 245),
     'violet': (155, 89, 182),
-    'vert': (39, 174, 96),
+    'vert':   (39, 174, 96),
     'orange': (230, 126, 34),
-    'rose': (236, 64, 122),
-    'noir': (45, 52, 54)
+    'rose':   (236, 64, 122),
+    'noir':   (45, 52, 54),
 }
 
 
@@ -58,11 +59,16 @@ def main():
         print(f"Base de données vide : {paths['db']}")
         return
 
-    # Mapping genre → couleur
-    genre_colors_map = {}
+    # Mapping genre ID (int) → couleur RGB, construit depuis genres.json
+    genre_colors_map = {}  # { genre_id (int) : (R, G, B) }
     genres = load_json(paths["genres"], default=[])
     for g in genres:
-        genre_colors_map[g['id']] = g.get('Couleur', 'noir')
+        try:
+            gid = int(g['id'])  # genres.json stocke les IDs en string → cast int
+            color_name = g.get('Couleur', 'noir')
+            genre_colors_map[gid] = COLORS_RGB.get(color_name, COLORS_RGB['noir'])
+        except (ValueError, KeyError):
+            pass
 
     # Filtrer les nouvelles musiques
     new_songs = [s for s in songs if isinstance(s.get('ID'), (int, float)) and int(s['ID']) > max_id_generated]
@@ -89,16 +95,16 @@ def main():
 
             difficulte = str(song.get('Difficulté', ''))
             if difficulte == 'Difficile':
+                # QR rouge pour les chansons difficiles
                 c_mask = SolidFillColorMask(front_color=(255, 0, 0), back_color=(255, 255, 255))
-                logo_color_rgb = (0, 0, 0)
+                logo_color_rgb = COLORS_RGB['noir']
             else:
                 c_mask = SolidFillColorMask(front_color=(0, 0, 0), back_color=(255, 255, 255))
                 try:
                     genre_id = int(song.get('Genre', -1))
-                    color_name = genre_colors_map.get(genre_id, 'noir')
-                    logo_color_rgb = COLORS_RGB.get(color_name, (0, 0, 0))
+                    logo_color_rgb = genre_colors_map.get(genre_id, COLORS_RGB['noir'])
                 except (ValueError, TypeError):
-                    logo_color_rgb = (0, 0, 0)
+                    logo_color_rgb = COLORS_RGB['noir']
 
             qr_img = qr.make_image(
                 image_factory=StyledPilImage,

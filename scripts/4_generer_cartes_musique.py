@@ -71,10 +71,20 @@ def main():
     font_path = os.path.join(base, "fonts", "KeeponTruckin.ttf")
     font_path_title = os.path.join(base, "fonts", "COOPBL.TTF")
 
-    # Chercher l'image recto dans webapp/img ou img/
-    recto_img_path = os.path.join(base, "webapp", "img", "recto_carteExtrait.png")
-    if not os.path.exists(recto_img_path):
-        recto_img_path = os.path.join(base, "img", "recto_carteExtrait.png")
+    # Chercher l'image recto : modes/<mode>/img/ en priorité, puis fallbacks historiques
+    def find_recto(filename):
+        candidates = [
+            os.path.join(paths["img"], filename),       # ✅ chemin canonique
+            os.path.join(base, "webapp", "img", filename),  # ancien emplacement webapp
+            os.path.join(base, "img", filename),        # ancien emplacement racine
+        ]
+        for p in candidates:
+            if os.path.exists(p):
+                return p
+        return candidates[0]  # retourne le chemin canonique même si absent (fallback blanc)
+
+    recto_img_path = find_recto("recto_carteExtrait.png")
+    recto_chance_path = find_recto("recto_carteChance.png")
 
     for song in new_songs:
         song_id = int(song['ID'])
@@ -95,8 +105,12 @@ def main():
         recto.save(os.path.join(paths["cartes"], f"{song_id}_recto_{titre_safe}.png"))
 
         # --- VERSO ---
-        pochette_raw = str(song.get('local_artwork_path', '')).replace('../', '')
-        pochette_path = os.path.join(base, pochette_raw)
+        # local_artwork_path peut être "./pochettes/fichier.jpg" (relatif au mode)
+        # ou "../modes/music/assets/pochettes/fichier.jpg" (ancien format).
+        # On extrait le basename et on utilise paths["pochettes"] pour construire
+        # le chemin absolu correct : modes/<mode>/assets/pochettes/
+        pochette_filename = os.path.basename(str(song.get('local_artwork_path', '')))
+        pochette_path = os.path.join(paths["pochettes"], pochette_filename)
 
         try:
             pochette = Image.open(pochette_path).convert("RGBA")
