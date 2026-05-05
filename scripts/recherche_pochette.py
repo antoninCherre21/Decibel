@@ -2,26 +2,34 @@ import requests
 import os
 import shutil
 import pandas as pd
+import argparse
 
 def clean_filename(name):
     return "".join([c for c in str(name) if c.isalnum() or c in [' ', '-', '_']]).strip().replace(' ', '_')
 
 def search_artwork():
-    print("--- Recherche de Pochette iTunes et Mise à jour ---")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", type=str, default="music", help="Mode de jeu")
+    args = parser.add_argument() if False else parser.parse_args()
     
-    csv_file = "../decibel_playlist.csv"
-    if not os.path.exists(csv_file):
-        csv_file = "decibel_playlist.csv"
-        
-    if not os.path.exists(csv_file):
-        print(f"Erreur : Impossible de trouver {csv_file}")
+    mode = args.mode
+    print(f"--- Recherche de Pochette iTunes et Mise à jour ({mode.upper()}) ---")
+    
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    db_path = os.path.join(base_dir, "modes", mode, "db.json")
+    
+    if not os.path.exists(db_path):
+        print(f"Erreur : Impossible de trouver {db_path}")
         return
         
-    df = pd.read_csv(csv_file)
+    try:
+        df = pd.read_json(db_path)
+    except Exception as e:
+        print(f"Erreur lecture JSON: {e}")
+        return
     
     recherche = input("Rechercher dans votre playlist (Titre ou Artiste) : ").strip().lower()
     
-    # Filtrer les musiques qui correspondent
     matches = df[df['Titre'].str.lower().str.contains(recherche, na=False) | 
                  df['Artiste'].str.lower().str.contains(recherche, na=False)]
                  
@@ -31,7 +39,7 @@ def search_artwork():
         
     print("\nMusiques trouvées dans votre playlist :")
     for i, (idx, row) in enumerate(matches.iterrows()):
-        print(f"[{i+1}] {row['Titre']} - {row['Artiste']} (ID: {row['ID']})")
+        print(f"[{i+1}] {row['Titre']} - {row['Artiste']} (ID: {row.get('ID', '?')})")
         
     choix_musique = input("\nChoisissez le numéro de la musique à modifier (ou 'q' pour quitter) : ")
     if choix_musique.lower() == 'q':
@@ -49,8 +57,8 @@ def search_artwork():
     selected_row = matches.iloc[choix_musique_idx]
     titre = selected_row['Titre']
     artiste = selected_row['Artiste']
-    song_id = selected_row['ID']
-    original_idx = selected_row.name # L'index dans le dataframe original
+    song_id = selected_row.get('ID', 'unknown')
+    original_idx = selected_row.name
     
     print(f"\nRecherche de pochettes sur iTunes pour : {titre} - {artiste}...")
 
@@ -76,13 +84,12 @@ def search_artwork():
         print("Aucun résultat trouvé sur iTunes.")
         return
 
-    temp_dir = "./temp_pochettes"
+    temp_dir = os.path.join(base_dir, "temp_pochettes")
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
     os.makedirs(temp_dir)
 
     choices = []
-    
     print("\nRésultats trouvés :")
 
     for i, item in enumerate(results):
@@ -107,7 +114,6 @@ def search_artwork():
                 f.write(img_resp.content)
                 
             print(f"[{i+1}] {track_name} - {artist_name} (Album: {album_name})")
-            
             choices.append((artwork_url_hq, filepath))
             
         except requests.RequestException:
@@ -124,25 +130,22 @@ def search_artwork():
             if 0 <= choice_idx < len(choices) and choices[choice_idx]:
                 new_url, temp_filepath = choices[choice_idx]
                 
-                # Récupérer le chemin local depuis le CSV ou le générer
                 local_path = df.at[original_idx, 'local_artwork_path']
                 if pd.isna(local_path) or str(local_path).strip() == "":
                     titre_clean = clean_filename(str(titre).replace(" ", "_"))
                     artiste_clean = clean_filename(str(artiste).replace(" ", "_"))
-                    local_path = f"./pochettes/{song_id}_{titre_clean}_{artiste_clean}.jpg"
+                    local_path = f"../modes/{mode}/assets/pochettes/{song_id}_{titre_clean}_{artiste_clean}.jpg"
                     df.at[original_idx, 'local_artwork_path'] = local_path
                 
-                # Remplacer le fichier
-                target_filepath = os.path.join(os.path.dirname(csv_file), local_path)
+                target_filepath = os.path.join(base_dir, str(local_path).replace('../', ''))
                 os.makedirs(os.path.dirname(target_filepath), exist_ok=True)
                 
                 shutil.copy(temp_filepath, target_filepath)
                 print(f"\n[+] Pochette remplacée : {target_filepath}")
                 
-                # Mettre à jour le CSV
                 df.at[original_idx, 'artwork_url_itunes'] = new_url
-                df.to_csv(csv_file, index=False)
-                print("[+] Base de données mise à jour avec succès.")
+                df.to_json(db_path, orient="records", indent=4, force_ascii=False)
+                print("[+] Base de données JSON mise à jour avec succès.")
                 
                 break
             else:
@@ -150,7 +153,6 @@ def search_artwork():
         except ValueError:
             print("Entrée invalide.")
 
-    # Nettoyage
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
 

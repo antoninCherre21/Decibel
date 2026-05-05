@@ -1,18 +1,13 @@
 import pandas as pd
 import requests
 import time
-import time
 import os
 import datetime
-
-# Configuration des fichiers
-SOURCE_FILE = "./musiques_a_ajouter.csv"
-COMPLETED_FILE = "./scripts/decibel_playlist_prov.csv"
+import argparse
 
 def get_itunes_info(artist, title):
     """Recherche les infos sur iTunes API"""
     search_url = "https://itunes.apple.com/search"
-    # Nettoyage basique pour améliorer la recherche
     term = f"{artist} {title}".replace(" ft.", "").replace(" feat.", "")
     params = {"term": term, "entity": "song", "limit": 1}
     
@@ -22,7 +17,6 @@ def get_itunes_info(artist, title):
             data = response.json()
             if data["resultCount"] > 0:
                 result = data["results"][0]
-                # On récupère la date complète (YYYY-MM-DD)
                 release_date = result.get("releaseDate", "")[:10]
                 return {
                     "preview_url": result.get("previewUrl"),
@@ -34,49 +28,52 @@ def get_itunes_info(artist, title):
     return None
 
 def main():
+    parser = argparse.ArgumentParser(description="Recherche API iTunes")
+    parser.add_argument("--mode", type=str, default="music", help="Mode de jeu (ex: music, movies)")
+    args = parser.add_argument() if False else parser.parse_args()
+    
+    mode = args.mode
+    SOURCE_FILE = f"./modes/{mode}/to_add.json"
+    COMPLETED_FILE = f"./scripts/{mode}_playlist_prov.json"
+
     if not os.path.exists(SOURCE_FILE):
         print(f"Erreur: Le fichier source '{SOURCE_FILE}' est introuvable.")
         return
 
-    # Chargement du fichier source
-    df_source = pd.read_csv(SOURCE_FILE)
-    print(f"Chargement de {len(df_source)} titres à traiter depuis {SOURCE_FILE}...")
+    # Chargement du fichier source JSON
+    try:
+        df_source = pd.read_json(SOURCE_FILE)
+    except Exception as e:
+        print(f"Le fichier {SOURCE_FILE} est vide ou invalide.")
+        return
 
-    # Sleep for user convenience
+    print(f"Chargement de {len(df_source)} titres à traiter depuis {SOURCE_FILE}...")
     time.sleep(1)
 
-    # On travaille sur une liste d'index pour pouvoir modifier le dataframe source sans casser la boucle
     indices = list(df_source.index)
 
     for i in indices:
-        # Vérification si la ligne existe toujours (au cas où)
         if i not in df_source.index:
             continue
             
         row = df_source.loc[i]
-        artiste = row['Artiste']
-        titre = row['Titre']
-        # Gestion propre de la date CSV (peut être int ou float ou str)
-        # On nettoie pour n'avoir que l'année en string pour la comparaison
-        date_csv_raw = str(row['Date']).replace('.0', '').strip()
-        # Si la date CSV est juste une année (ex: 1984), on l'utilise pour comparer
+        artiste = row.get('Artiste', '')
+        titre = row.get('Titre', '')
+        date_csv_raw = str(row.get('Date', '')).replace('.0', '').strip()
         year_csv = date_csv_raw[:4]
         
-        print(f"\n--- Traitement : {titre} - {artiste} (CSV: {date_csv_raw}) ---")
+        print(f"\n--- Traitement : {titre} - {artiste} (JSON: {date_csv_raw}) ---")
         
         info = get_itunes_info(artiste, titre)
         
         if info:
-            date_itunes_full = info['release_date'] # YYYY-MM-DD
+            date_itunes_full = info['release_date']
             year_itunes = date_itunes_full[:4]
-            
             final_date = date_itunes_full
             
-            # 1. Vérification de l'année
-            # Si l'année CSV diffère de l'année iTunes
-            if year_itunes != year_csv:
+            if year_itunes != year_csv and year_csv:
                 print(f"⚠️  CONFLIT D'ANNÉE détecté !")
-                print(f"   1. CSV (Votre date) : {date_csv_raw}")
+                print(f"   1. JSON (Votre date) : {date_csv_raw}")
                 print(f"   2. iTunes (Meilleur résultat) : {date_itunes_full}")
                 print(f"   3. Saisir manuellement")
                 
@@ -91,69 +88,58 @@ def main():
                     elif choix == '3':
                         final_date = input("   -> Entrez la date : ")
                         break
-            else:
-                # Si les années correspondent, on vérifie si le jour est le 1er du mois (souvent une date par défaut)
-                if date_itunes_full.endswith("-01"):
-                    print(f"⚠️  DATE PAR DÉFAUT SUSPECTE (Jour 01) détectée !")
-                    print(f"   1. Garder CSV ({date_csv_raw})")
-                    print(f"   2. Garder iTunes ({date_itunes_full})")
-                    print(f"   3. Saisir manuellement")
-                    
-                    while True:
-                        choix_jour = input("   -> Quel choix (1/2/3) ? ")
-                        if choix_jour == '1':
-                            final_date = date_csv_raw
-                            break
-                        elif choix_jour == '2':
-                            final_date = date_itunes_full
-                            break
-                        elif choix_jour == '3':
-                            final_date = input("   -> Entrez la date (YYYY-MM-DD) : ")
-                            break
-                else:
-                    final_date = date_itunes_full
+            elif date_itunes_full.endswith("-01"):
+                print(f"⚠️  DATE PAR DÉFAUT SUSPECTE (Jour 01) détectée !")
+                print(f"   1. Garder JSON ({date_csv_raw})")
+                print(f"   2. Garder iTunes ({date_itunes_full})")
+                print(f"   3. Saisir manuellement")
+                
+                while True:
+                    choix_jour = input("   -> Quel choix (1/2/3) ? ")
+                    if choix_jour == '1':
+                        final_date = date_csv_raw
+                        break
+                    elif choix_jour == '2':
+                        final_date = date_itunes_full
+                        break
+                    elif choix_jour == '3':
+                        final_date = input("   -> Entrez la date (YYYY-MM-DD) : ")
+                        break
             
-            # 2. Préparation de la ligne complète
             new_row = row.to_dict()
             new_row['preview_url_itunes'] = info['preview_url']
             new_row['artwork_url_itunes'] = info['artwork_url']
-            
-            # Mise à jour des dates
             new_row['Date_Ajout'] = datetime.date.today().strftime("%Y-%m-%d")
             new_row['Date_Sortie'] = final_date
             
-            # Suppression de l'ancienne colonne Date si elle existe dans le row source
             if 'Date' in new_row:
                 del new_row['Date']
             
-            # 3. Sauvegarde dans le fichier complet (Append mode)
-            # On force l'ordre des colonnes pour correspondre au fichier de destination
-            # Ordre attendu : Date_Ajout, Date_Sortie, Titre, Artiste, Genre, Difficulté, preview_url_itunes, artwork_url_itunes
+            # Sauvegarde dans le fichier prov
             columns_order = ['Date_Ajout', 'Date_Sortie', 'Titre', 'Artiste', 'Genre', 'Difficulté', 'preview_url_itunes', 'artwork_url_itunes']
             
-            df_complete_row = pd.DataFrame([new_row])
-            
-            # Réorganisation des colonnes (et ajout des manquantes si besoin)
+            # Load existing prov JSON or create new
+            if os.path.exists(COMPLETED_FILE) and os.path.getsize(COMPLETED_FILE) > 0:
+                df_prov = pd.read_json(COMPLETED_FILE)
+            else:
+                df_prov = pd.DataFrame(columns=columns_order)
+                
+            df_new_row = pd.DataFrame([new_row])
             for col in columns_order:
-                if col not in df_complete_row.columns:
-                    df_complete_row[col] = ""
+                if col not in df_new_row.columns:
+                    df_new_row[col] = ""
+            df_new_row = df_new_row[columns_order]
             
-            df_complete_row = df_complete_row[columns_order]
-
-            # On écrit l'en-tête seulement si le fichier n'existe pas ou est vide
-            header_mode = not os.path.exists(COMPLETED_FILE) or os.path.getsize(COMPLETED_FILE) == 0
-            df_complete_row.to_csv(COMPLETED_FILE, mode='a', header=header_mode, index=False)
+            df_prov = pd.concat([df_prov, df_new_row], ignore_index=True)
+            df_prov.to_json(COMPLETED_FILE, orient="records", indent=4, force_ascii=False)
             
-            # 4. Suppression de la ligne dans le fichier source et sauvegarde
             df_source = df_source.drop(i)
-            df_source.to_csv(SOURCE_FILE, index=False)
+            df_source.to_json(SOURCE_FILE, orient="records", indent=4, force_ascii=False)
             
             print(f"✅ Ajouté avec date : {final_date}")
-            
         else:
             print("❌ Introuvable sur iTunes (ou erreur). Laissé dans la liste de travail.")
         
-        # Pause pour respecter l'API Apple
         time.sleep(0.5)
 
     print(f"\nTraitement terminé ! Les éléments restants dans '{COMPLETED_FILE}' sont ceux en échec.")

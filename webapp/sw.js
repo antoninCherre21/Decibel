@@ -1,10 +1,10 @@
-const CACHE_NAME = 'decibel-pwa-cache-v1';
+const CACHE_NAME = 'decibel-pwa-cache-v2';
 const urlsToCache = [
   '/Decibel/',
   '/Decibel/index.html',
-  '/Decibel/manifest.json',
-  '/Decibel/img/icon-512x512.png',
-  'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js',
+  '/Decibel/webapp/scanner.html',
+  '/Decibel/webapp/manifest.json',
+  '/Decibel/webapp/img/icon-512x512.png',
   'https://unpkg.com/html5-qrcode'
 ];
 

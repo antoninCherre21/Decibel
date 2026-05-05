@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1",
+        "Couleur": "bleu",
+        "Famille de Genre": "Pop / Variété",
+        "Sous-genres": "Pop 80s, Variété Française, K-Pop, Pop Internationale"
+    },
+    {
+        "id": "2",
+        "Couleur": "violet",
+        "Famille de Genre": "Rock",
+        "Sous-genres": "Rock 'n' Roll, Hard Rock, Grunge, Punk, New Wave, Pop-Rock"
+    },
+    {
+        "id": "3",
+        "Couleur": "vert",
+        "Famille de Genre": "Urbain",
+        "Sous-genres": "Rap, R&B, Reggae, Dancehall, Hip-Hop"
+    },
+    {
+        "id": "4",
+        "Couleur": "orange",
+        "Famille de Genre": "Électronique",
+        "Sous-genres": "French Touch, Techno, EDM, Synth-pop, Eurodance, House"
+    },
+    {
+        "id": "5",
+        "Couleur": "rose",
+        "Famille de Genre": "Groove & Monde",
+        "Sous-genres": "Soul, Funk, Jazz, Gospel, Blues, Reggaeton, Salsa, Afrobeat, Rai, Disco, Latino"
+    }
+]

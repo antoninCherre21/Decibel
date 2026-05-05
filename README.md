@@ -1,38 +1,63 @@
-# Decibel 🎵
+# Décibel - Le Jeu Musical & Cinématographique Open Source
 
-Ce projet consiste à créer son propre jeu de cartes nommé Decibel. Il contient une suite de scripts Python permettant de créer de A à Z votre propre jeu de cartes musical physique (inspiré de jeux comme Hitster). À partir d'une simple liste de musiques, ces outils génèrent automatiquement des cartes de jeu prêtes à imprimer, incluant les pochettes d'albums, les informations des morceaux, et des QR codes pour écouter les titres.
+Décibel est un projet open-source permettant de créer, imprimer et jouer à un jeu de société moderne de type "Blind-Test" (inspiré de Hitster) à l'aide de véritables cartes physiques dotées de QR codes. Le jeu fonctionne via une Web App 100% statique (PWA) agissant comme un scanner natif.
 
-## 🌟 Fonctionnalités
+## 🚀 Fonctionnalités Clés
 
-Le projet est divisé en plusieurs scripts qui s'occupent de chaque étape de la création du jeu :
+- **Système Multi-Modes :** Architecture modulable permettant d'ajouter facilement différents modes de jeu (`music`, `movies`, `series`).
+- **Web App PWA :** Un scanner ultra-rapide (lecture de QR Codes en JS via la caméra), installable sur téléphone sans passer par l'App Store.
+- **Base de Données Légère :** Utilisation du format JSON pour un chargement instantané dans la Web App.
+- **Automatisation Totale (Python) :** Des scripts gèrent l'intégralité du cycle :
+  - Connexion aux API (ex: iTunes) pour récupérer musiques, dates de sortie et pochettes HD.
+  - Génération des QR Codes avec le logo de votre choix.
+  - Mise en page automatique des cartes physiques (recto/verso) et génération des planches PDF prêtes à imprimer.
 
-1. **Validation et préparation des données** : Vérification de votre playlist au format CSV et équilibrage des niveaux de difficulté (Facile, Moyen, Difficile).
-2. **Récupération des médias** : Téléchargement automatique des pochettes d'album depuis internet.
-3. **Génération de QR Codes** : Création de QR codes personnalisés pointant vers les morceaux (Spotify, YouTube, etc.).
-4. **Génération des cartes** : Création des images des cartes (recto/verso) au format haute définition (300 DPI) avec les informations du morceau (Titre, Artiste, Année).
-5. **Préparation à l'impression** : Assemblage des cartes sur des planches d'impression régulières (A4/A3) pour faciliter le découpage et la plastification.
+---
 
-## 📂 Structure du projet
+## 📁 Architecture du Dépôt
 
-* `decibel_playlist.csv` : Le fichier source contenant votre liste de musiques, artistes, années et liens d'écoute.
-* `scripts/` : Le dossier contenant toute la logique du projet.
-  * `0_recherche_API.py` / `recherche_pochette.py` : Scripts pour récupérer les informations et les pochettes.
-  * `1_Vérification_csv.py` : Vérifie la structure et les données de votre CSV.
-  * `2_generer_qrcodes.py` : Génère les QR codes avec un style graphique défini.
-  * `3_generer_cartes_musique.py` : Assemble les textes, les pochettes et les QR codes sur les fonds de cartes.
-  * `4_generer_planche_impression.py` : Crée les planches PDF/images finales prêtes pour votre imprimante.
-* `cartes_musiques/` : Dossier de sortie contenant les cartes générées.
-* `qrcodes_finaux/` : Dossier de sortie contenant les QR codes générés.
+L'architecture est pensée pour être facilement hébergée sur **GitHub Pages** ou tout autre serveur statique (Apache, Nginx, OVH).
 
-## 🛠️ Utilisation
+```text
+/Decibel
+├── index.html               # Le Menu Principal (choix du mode de jeu)
+├── webapp/                  # Les fichiers de la Progressive Web App
+│   ├── scanner.html         # L'interface du scanner et du lecteur
+│   ├── manifest.json        # Configuration d'installation PWA
+│   ├── sw.js                # Service Worker (Cache offline)
+│   └── img/                 # Logos et icônes
+├── modes/                   # Dossier contenant tous les modes de jeu
+│   ├── music/               # (Voir le README dans ce dossier pour plus de détails)
+│   ├── movies/              # (À venir)
+│   └── series/              # (À venir)
+├── scripts/                 # Les scripts Python d'automatisation
+│   ├── 0_recherche_API.py
+│   ├── 1_download.py
+│   └── ...
+└── run_all.py               # Le script principal pour tout générer !
+```
 
-1. Complétez le fichier `decibel_playlist.csv` avec vos musiques.
-2. Exécutez les scripts dans l'ordre (de 1 à 4).
-3. Récupérez vos planches d'impression générées.
+---
 
-## 🖨️ Conseils d'impression
+## 🛠️ Comment utiliser le projet ?
 
-Pour un rendu optimal "jeu de société" :
-- Imprimez sur du papier mat épais (160 à 180 g/m²).
-- Imprimez les rectos et les versos séparément.
-- Collez-les ensemble, découpez grossièrement, plastifiez (pochettes 80 microns) puis effectuez la découpe finale.
+### 1. Prérequis (Pour l'ordinateur)
+- Python 3.9+
+- Librairies Python : `pip install pandas requests qrcode Pillow`
+
+### 2. Comment ajouter de nouvelles cartes ?
+1. Placez vos envies dans `modes/<mode>/to_add.json`.
+2. Ouvrez un terminal à la racine du projet et lancez :
+   ```bash
+   python run_all.py
+   ```
+3. Suivez les instructions à l'écran. Le script vous demandera pour quel mode vous souhaitez travailler, puis exécutera la chaîne complète (Recherche API -> Téléchargement Media -> Génération QR -> Génération Cartes -> Génération PDF).
+
+### 3. Comment jouer ? (Le Serveur Web)
+Le dossier complet peut être poussé sur **GitHub Pages** ou un serveur web classique.
+1. Ouvrez l'URL du site depuis un smartphone.
+2. Cliquez sur le mode désiré (ex: *Musique*).
+3. Acceptez l'utilisation de la caméra.
+4. Flashez vos cartes imprimées. La musique ou l'extrait se lancera instantanément !
+
+> 💡 **Astuce Pro :** Sur iOS/Android, cliquez sur "Partager" puis "Ajouter à l'écran d'accueil" pour installer le jeu comme une véritable application native.

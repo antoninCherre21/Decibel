@@ -3,38 +3,48 @@ import sys
 import os
 
 def main():
-    # Liste des scripts à exécuter dans l'ordre
+    print("="*60)
+    print(" Bienvenue dans le processus global Décibel")
+    print("="*60)
+    
+    modes_disponibles = ["music"]
+    
+    print("\nModes disponibles :")
+    for i, m in enumerate(modes_disponibles):
+        print(f"{i+1}. {m}")
+        
+    choix = input("\nEntrez le numéro du mode à générer (défaut: 1) : ").strip()
+    mode = "music"
+    if choix.isdigit() and 1 <= int(choix) <= len(modes_disponibles):
+        mode = modes_disponibles[int(choix)-1]
+        
+    print(f"\n🚀 Lancement du processus pour le mode : {mode.upper()}")
+    
     scripts = [
         "scripts/0_recherche_API.py",
         "scripts/1_download.py",
-        "scripts/2_Vérification_csv.py",
+        "scripts/2_Verification_BDD.py",
         "scripts/3_generer_qrcodes.py",
         "scripts/4_generer_cartes_musique.py",
         "scripts/5_generer_planche_impression.py"
     ]
 
-    # On s'assure d'être à la racine du projet
     base_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(base_dir)
 
-    print("Début du processus global Decibel...")
-    
     for script in scripts:
         print(f"\n{'='*60}")
         print(f"▶ Lancement de : {script}")
         print(f"{'='*60}\n")
         
-        # Exécution du script avec l'exécutable Python actuel
-        result = subprocess.run([sys.executable, script])
+        result = subprocess.run([sys.executable, script, "--mode", mode])
         
-        # Vérification si le script s'est bien terminé
         if result.returncode != 0:
-            if "2_Vérification_csv.py" in script:
+            if "2_Verification_BDD.py" in script:
                 print(f"\n❌ Le script run_all a été interrompu : des erreurs ont été détectées dans la base de données !")
-                print("Consultez le fichier 'erreurs.txt' à la racine pour voir les détails.")
-                print(" -> Pour ignorer une erreur (ex: faux doublon), copiez la ligne exacte dans 'erreurs_ignorees.txt'.")
-                print(" -> Pour supprimer une musique problématique, utilisez : python scripts/supprimer_musique.py")
-                print(" -> Pour modifier une pochette erronée, utilisez : python scripts/recherche_pochette.py")
+                print(f"Consultez le fichier 'modes/{mode}/erreurs.txt' pour voir les détails.")
+                print(f" -> Pour ignorer une erreur (ex: faux doublon), copiez la ligne exacte dans 'modes/{mode}/erreurs_ignorees.txt'.")
+                print(f" -> Pour modifier un fichier JSON manuellement, allez dans modes/{mode}/db.json")
                 print("\nUne fois les erreurs corrigées ou ignorées, vous pourrez relancer 'run_all.py'.")
             else:
                 print(f"\n❌ Erreur rencontrée lors de l'exécution de {script}.")
