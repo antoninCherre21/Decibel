@@ -1,0 +1,11 @@
+# Décibel — Dépendances Python
+# Installation : pip install -r requirements.txt
+
+# Requêtes HTTP (téléchargement médias, API iTunes)
+requests
+
+# Traitement d'images (génération cartes, QR codes, pochettes)
+Pillow
+
+# Génération de QR Codes avec style arrondi
+qrcode[pil]

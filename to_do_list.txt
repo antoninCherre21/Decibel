@@ -5,7 +5,6 @@
 script 4
 
 verifier les musique comme bolide allement, ne doit pas etre explicit.
-verifier si meilluer option que csv, si optimisation possibles quelqupart
 Employer plien d'agents IA pour verif global (du readme, jsuqu'aux scripts, avec tous les cas possibles qui sont atteints), bon noms de pochettes, de musqiues, de titres, artistes, genres de musiques, les liens itunes tout tout tout !
 
 # TO VERIFY

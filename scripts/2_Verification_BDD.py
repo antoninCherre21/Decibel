@@ -1,207 +1,178 @@
-import pandas as pd
 import os
 import sys
 import argparse
 from collections import Counter
+from utils import get_paths, load_json, save_json
 
-def load_genre_mapping(genres_path):
-    mapping = {}
-    if not os.path.exists(genres_path):
-        return mapping
-    
-    try:
-        df_genres = pd.read_json(genres_path)
-        for _, row in df_genres.iterrows():
-            genre_id = row['id']
-            if pd.notna(row.get('Famille de Genre')):
-                mapping[row['Famille de Genre'].strip()] = genre_id
-            if pd.notna(row.get('Sous-genres')):
-                subs = str(row['Sous-genres']).split(',')
-                for sub in subs:
-                    mapping[sub.strip()] = genre_id
-    except Exception as e:
-        pass
 
-    manual_map = {
-        "Pop": 1, "Hip Hop": 3, "Metal": 2, "Electro": 4, 
-        "Chanson Française": 1, "Variété Française": 1,
-        "Indie Folk": 2, "Alternative": 2, "Country": 1,
-        "Latin Pop": 5, "Latin": 5, "Eurodance": 1, "New Wave": 1,
-        "Punk Rock": 2, "Britpop": 2, "Afrobeats": 5, "Afro-House": 5,
-        "Synthpop": 4, "Folk": 1, "Folk Rock": 2, "Nu Metal": 2,
-        "Pop Rock": 1, "Pop Urbaine": 3, "Reggaeton": 5, "Salsa": 5,
-        "Rap Français": 3, "Rap": 3, "R&B": 3, "Soul": 5, "Funk": 5,
-        "Disco": 1, "Jazz": 5, "Gospel": 5, "Blues": 5,
-        "Rock": 2, "Hard Rock": 2, "Grunge": 2, "Punk": 2,
-        "Rock and Roll": 2, "K-Pop": 1, "Raï": 5, "Dance": 4,
-        "Comédie Musicale": 1, "Rap Celtique": 3, "Afro-House": 5,
-        "Hip Hop/Country": 3, "Hip Hop/Rock": 3, "Soul/Pop": 5,
-        "A cappella": 1, "Rap Parodie": 3,
-        "Yé-yé": 1, "Disco/Funk": 5, "Zouk": 5
-    }
-    for k, v in manual_map.items():
-        if k not in mapping:
-            mapping[k] = v
-            
+GENRE_MAP = {
+    "Pop": 1, "Hip Hop": 3, "Metal": 2, "Electro": 4,
+    "Chanson Française": 1, "Variété Française": 1,
+    "Indie Folk": 2, "Alternative": 2, "Country": 1,
+    "Latin Pop": 5, "Latin": 5, "Eurodance": 1, "New Wave": 1,
+    "Punk Rock": 2, "Britpop": 2, "Afrobeats": 5, "Afro-House": 5,
+    "Synthpop": 4, "Folk": 1, "Folk Rock": 2, "Nu Metal": 2,
+    "Pop Rock": 1, "Pop Urbaine": 3, "Reggaeton": 5, "Salsa": 5,
+    "Rap Français": 3, "Rap": 3, "R&B": 3, "Soul": 5, "Funk": 5,
+    "Disco": 1, "Jazz": 5, "Gospel": 5, "Blues": 5,
+    "Rock": 2, "Hard Rock": 2, "Grunge": 2, "Punk": 2,
+    "Rock and Roll": 2, "K-Pop": 1, "Raï": 5, "Dance": 4,
+    "Comédie Musicale": 1, "Rap Celtique": 3,
+    "Hip Hop/Country": 3, "Hip Hop/Rock": 3, "Soul/Pop": 5,
+    "A cappella": 1, "Rap Parodie": 3,
+    "Yé-yé": 1, "Disco/Funk": 5, "Zouk": 5
+}
+
+
+def load_genre_mapping(genres_path: str) -> dict:
+    """Charge la carte des genres depuis genres.json et la fusionne avec GENRE_MAP."""
+    mapping = dict(GENRE_MAP)  # Copie du mapping par défaut
+    genres = load_json(genres_path, default=[])
+    for g in genres:
+        gid = g.get('id')
+        if g.get('Famille de Genre'):
+            mapping[g['Famille de Genre'].strip()] = gid
+        subs = str(g.get('Sous-genres', '')).split(',')
+        for sub in subs:
+            sub = sub.strip()
+            if sub:
+                mapping[sub] = gid
     return mapping
 
-def verify_and_correct(mode):
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    MODE_DIR = os.path.join(BASE_DIR, "modes", mode)
-    PLAYLIST_PATH = os.path.join(MODE_DIR, "db.json")
-    GENRES_PATH = os.path.join(MODE_DIR, "genres.json")
-    ERRORS_PATH = os.path.join(MODE_DIR, "erreurs.txt")
-    IGNORED_ERRORS_PATH = os.path.join(MODE_DIR, "erreurs_ignorees.txt")
-    STATS_PATH = os.path.join(MODE_DIR, "stats.json")
+
+def map_genre(genre, genre_map: dict, errors: list) -> int:
+    """Convertit un genre textuel en ID numérique."""
+    if genre is None or str(genre).strip() == "":
+        return genre
+    s_genre = str(genre).strip()
+    if s_genre.isdigit():
+        return int(s_genre)
+    # Recherche exacte puis insensible à la casse
+    if s_genre in genre_map:
+        return genre_map[s_genre]
+    for k, v in genre_map.items():
+        if k.lower() == s_genre.lower():
+            return v
+    errors.append(f"Erreur Genre Inconnu: {s_genre}")
+    return s_genre
+
+
+def verify_and_correct(mode: str) -> list:
+    paths = get_paths(mode)
 
     errors = []
-    if not os.path.exists(PLAYLIST_PATH):
-        print(f"Erreur: {PLAYLIST_PATH} introuvable.")
+    songs = load_json(paths["db"], default=[])
+    if not songs:
+        print(f"Base de données vide ou absente : {paths['db']}")
         return []
 
-    try:
-        df = pd.read_json(PLAYLIST_PATH)
-    except Exception as e:
-        print(f"Erreur lors de la lecture de la playlist: {e}")
-        return []
-    
-    if df.empty:
-        return []
+    genre_map = load_genre_mapping(paths["genres"])
 
-    genre_map = load_genre_mapping(GENRES_PATH)
-    
-    df['YearMonthDay'] = df['Date_Sortie'].apply(lambda x: str(x)[:10] if pd.notna(x) else "Unknown")
-    date_counts = Counter(df['YearMonthDay'])
-    duplicates_date = [date for date, count in date_counts.items() if count > 1 and date != "Unknown"]
-    
-    if duplicates_date:
-        for date in duplicates_date:
-            rows = df[df['YearMonthDay'] == date]
-            items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
-            items_str = ", ".join(items[:5]) + ("..." if len(items) > 5 else "")
-            errors.append(f"Erreur Doublon Date ({date}): {items_str}")
+    # --- Vérification des doublons de date ---
+    date_counts = Counter(str(s.get('Date_Sortie', ''))[:10] for s in songs)
+    for date, count in date_counts.items():
+        if count > 1 and date and date != "Unknown":
+            items = [f"{s['Titre']} - {s['Artiste']}" for s in songs if str(s.get('Date_Sortie', ''))[:10] == date]
+            errors.append(f"Erreur Doublon Date ({date}): {', '.join(items[:5])}{'...' if len(items) > 5 else ''}")
 
-    if 'ID' in df.columns:
-        id_counts = Counter(df['ID'])
-        duplicates_id = [id_val for id_val, count in id_counts.items() if count > 1]
-        if duplicates_id:
-            for id_val in duplicates_id:
-                rows = df[df['ID'] == id_val]
-                items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
-                items_str = ", ".join(items[:3]) + ("..." if len(items) > 3 else "")
-                errors.append(f"Erreur Doublon ID ({id_val}): {items_str}")
+    # --- Vérification des doublons d'ID ---
+    id_counts = Counter(s.get('ID') for s in songs)
+    for id_val, count in id_counts.items():
+        if count > 1:
+            items = [f"{s['Titre']} - {s['Artiste']}" for s in songs if s.get('ID') == id_val]
+            errors.append(f"Erreur Doublon ID ({id_val}): {', '.join(items[:3])}{'...' if len(items) > 3 else ''}")
 
-    title_counts = Counter(df['Titre'])
-    duplicates_title = [title for title, count in title_counts.items() if count > 1]
-    if duplicates_title:
-        for title in duplicates_title:
-            artists = df[df['Titre'] == title]['Artiste'].tolist()
-            artists_str = " et ".join(artists)
-            errors.append(f"Erreur Doublon Titre: {title} (par {artists_str})")
+    # --- Vérification des doublons de titre ---
+    title_counts = Counter(s.get('Titre') for s in songs)
+    for title, count in title_counts.items():
+        if count > 1:
+            artists = [s['Artiste'] for s in songs if s.get('Titre') == title]
+            errors.append(f"Erreur Doublon Titre: {title} (par {' et '.join(artists)})")
 
-    artist_counts = Counter(df['Artiste'])
-    limits_artist = [artist for artist, count in artist_counts.items() if count > 5]
-    if limits_artist:
-        for artist in limits_artist:
-            errors.append(f"Erreur Limite Artiste (>5): {artist} ({artist_counts[artist]} titres)")
+    # --- Limite d'artiste (> 5 titres) ---
+    artist_counts = Counter(s.get('Artiste') for s in songs)
+    for artist, count in artist_counts.items():
+        if count > 5:
+            errors.append(f"Erreur Limite Artiste (>5): {artist} ({count} titres)")
 
-    if 'artwork_url_itunes' in df.columns:
-        artwork_counts = Counter(df['artwork_url_itunes'])
-        duplicates_artwork = [url for url, count in artwork_counts.items() if count > 1 and pd.notna(url) and url != ""]
-        if duplicates_artwork:
-            for url in duplicates_artwork:
-                rows = df[df['artwork_url_itunes'] == url]
-                items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
-                items_str = ", ".join(items[:3]) + ("..." if len(items) > 3 else "")
-                errors.append(f"Erreur Doublon Artwork URL iTunes: {items_str} ({url})")
+    # --- Doublons d'URL artwork ---
+    artwork_counts = Counter(s.get('artwork_url_itunes') for s in songs if s.get('artwork_url_itunes'))
+    for url, count in artwork_counts.items():
+        if count > 1:
+            items = [f"{s['Titre']} - {s['Artiste']}" for s in songs if s.get('artwork_url_itunes') == url]
+            errors.append(f"Erreur Doublon Artwork URL iTunes: {', '.join(items[:3])}{'...' if len(items) > 3 else ''}")
 
-    if 'preview_url_itunes' in df.columns:
-        preview_counts = Counter(df['preview_url_itunes'])
-        duplicates_preview = [url for url, count in preview_counts.items() if count > 1 and pd.notna(url) and url != ""]
-        if duplicates_preview:
-            for url in duplicates_preview:
-                rows = df[df['preview_url_itunes'] == url]
-                items = [f"{row['Titre']} - {row['Artiste']}" for _, row in rows.iterrows()]
-                items_str = ", ".join(items[:3]) + ("..." if len(items) > 3 else "")
-                errors.append(f"Erreur Doublon Preview URL iTunes: {items_str} ({url})")
+    # --- Doublons d'URL preview ---
+    preview_counts = Counter(s.get('preview_url_itunes') for s in songs if s.get('preview_url_itunes'))
+    for url, count in preview_counts.items():
+        if count > 1:
+            items = [f"{s['Titre']} - {s['Artiste']}" for s in songs if s.get('preview_url_itunes') == url]
+            errors.append(f"Erreur Doublon Preview URL iTunes: {', '.join(items[:3])}{'...' if len(items) > 3 else ''}")
 
-    def map_genre(genre):
-        if pd.isna(genre): return genre
-        s_genre = str(genre).strip()
-        if s_genre.isdigit(): return int(s_genre)
-        if s_genre in genre_map: return genre_map[s_genre]
-        for k, v in genre_map.items():
-            if k.lower() == s_genre.lower(): return v
-        errors.append(f"Erreur Genre Inconnu: {s_genre}")
-        return s_genre
+    # --- Normalisation des genres ---
+    for song in songs:
+        song['Genre'] = map_genre(song.get('Genre'), genre_map, errors)
 
-    df['Genre_ID'] = df['Genre'].apply(map_genre)
-    df['Genre'] = df['Genre_ID']
-    
+    # --- Filtrage des erreurs ignorées ---
     ignored_errors = set()
-    if os.path.exists(IGNORED_ERRORS_PATH):
-        with open(IGNORED_ERRORS_PATH, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line: ignored_errors.add(line)
+    if os.path.exists(paths["ignored_errors"]):
+        with open(paths["ignored_errors"], 'r', encoding='utf-8') as f:
+            ignored_errors = {line.strip() for line in f if line.strip()}
 
-    final_errors = [err for err in errors if err not in ignored_errors]
+    final_errors = [e for e in errors if e not in ignored_errors]
 
-    with open(ERRORS_PATH, 'w', encoding='utf-8') as f:
+    # --- Écriture du rapport d'erreurs ---
+    with open(paths["errors"], 'w', encoding='utf-8') as f:
         f.write("--- RAPPORT D'ERREURS ---\n")
-        f.write("Si une ligne est marquée comme erreur mais n'en est pas une, copiez-collez cette ligne exacte dans le fichier 'erreurs_ignorees.txt' pour la masquer.\n")
+        f.write("Pour ignorer une erreur, copiez-collez la ligne exacte dans 'erreurs_ignorees.txt'.\n")
         f.write("-" * 50 + "\n\n")
         if not final_errors:
             f.write("Aucune erreur détectée (ou toutes les erreurs sont ignorées).\n")
         else:
-            for err in final_errors:
-                f.write(err + "\n")
-                
-    print(f"Erreurs sauvegardées dans {ERRORS_PATH}")
-    if ignored_errors:
-        masquees = len(errors) - len(final_errors)
-        if masquees > 0:
-            print(f"({masquees} erreurs masquées car présentes dans erreurs_ignorees.txt)")
+            f.write("\n".join(final_errors) + "\n")
 
+    print(f"Rapport d'erreurs : {paths['errors']}")
+    masked = len(errors) - len(final_errors)
+    if masked > 0:
+        print(f"({masked} erreur(s) masquée(s) via erreurs_ignorees.txt)")
+
+    # --- Calcul des statistiques ---
     stats = []
-    df['Year'] = df['Date_Sortie'].apply(lambda x: str(x)[:4] if pd.notna(x) else "Unknown")
-    year_counts = df['Year'].value_counts().sort_index()
-    for year, count in year_counts.items():
+    year_counts = Counter(str(s.get('Date_Sortie', ''))[:4] for s in songs)
+    for year, count in sorted(year_counts.items()):
         stats.append({'Type': 'Année', 'Valeur': year, 'Nombre': count})
 
-    def get_decade(year):
-        if year == "Unknown" or not year.isdigit(): return "Unknown"
-        return str(int(year) // 10 * 10) + "s"
-    
-    df['Decade'] = df['Year'].apply(get_decade)
-    decade_counts = df['Decade'].value_counts().sort_index()
-    for dec, count in decade_counts.items():
+    decade_counts = Counter(
+        (str(int(str(s.get('Date_Sortie', ''))[:4]) // 10 * 10) + "s"
+         if str(s.get('Date_Sortie', ''))[:4].isdigit() else "Unknown")
+        for s in songs
+    )
+    for dec, count in sorted(decade_counts.items()):
         stats.append({'Type': 'Décennie', 'Valeur': dec, 'Nombre': count})
 
-    genre_counts = df['Genre'].value_counts()
+    genre_counts = Counter(s.get('Genre') for s in songs)
     for g, count in genre_counts.items():
         stats.append({'Type': 'Genre ID', 'Valeur': g, 'Nombre': count})
 
-    if 'Difficulté' in df.columns:
-        diff_counts = df['Difficulté'].value_counts()
-        for d, count in diff_counts.items():
-            stats.append({'Type': 'Difficulté', 'Valeur': d, 'Nombre': count})
+    diff_counts = Counter(s.get('Difficulté') for s in songs if s.get('Difficulté'))
+    for d, count in diff_counts.items():
+        stats.append({'Type': 'Difficulté', 'Valeur': d, 'Nombre': count})
 
-    df_stats = pd.DataFrame(stats)
-    df_stats.to_json(STATS_PATH, orient="records", indent=4, force_ascii=False)
-    print(f"Statistiques sauvegardées dans {STATS_PATH}")
-    
-    df_final = df.drop(columns=['YearMonthDay', 'Genre_ID', 'Year', 'Decade'])
-    df_final.to_json(PLAYLIST_PATH, orient="records", indent=4, force_ascii=False)
-    print(f"Fichier {PLAYLIST_PATH} mis à jour avec les IDs de genre.")
-    
+    save_json(stats, paths["stats"])
+    print(f"Statistiques sauvegardées : {paths['stats']}")
+
+    # --- Sauvegarde de la DB mise à jour (genres normalisés) ---
+    save_json(songs, paths["db"])
+    print(f"Fichier {paths['db']} mis à jour avec les IDs de genre.")
+
     return final_errors
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", type=str, default="music")
-    args = parser.add_argument() if False else parser.parse_args()
-    
+    args = parser.parse_args()
+
     final_errors = verify_and_correct(args.mode)
     if final_errors:
         print("\n❌ Vérification échouée : des erreurs ont été trouvées (voir erreurs.txt).")
