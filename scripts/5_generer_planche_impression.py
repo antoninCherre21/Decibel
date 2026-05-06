@@ -12,8 +12,10 @@ def generate_pdf():
     mode = args.mode
     paths = get_paths(mode)
     INPUT_DIR = paths["cartes"]
-    EXPORTS_DIR = paths["exports"]
+    PLANCHES_DIR = paths["planches"]
     TRACKING_FILE = paths["planches_suivi"]
+
+    os.makedirs(PLANCHES_DIR, exist_ok=True)
 
     A4_WIDTH = 2480
     A4_HEIGHT = 3508
@@ -89,7 +91,7 @@ def generate_pdf():
             col_verso = (CARDS_PER_ROW - 1) - col_recto
             page_verso.paste(img, (MARGIN_X + col_verso * CARD_SIZE, MARGIN_Y + row_recto * CARD_SIZE))
 
-        output_pdf = os.path.join(EXPORTS_DIR, f"{planche_name_base}.pdf")
+        output_pdf = os.path.join(PLANCHES_DIR, f"{planche_name_base}.pdf")
         page_recto.save(output_pdf, save_all=True, append_images=[page_verso], resolution=300)
 
         tracking_data["planches"].append({
@@ -102,7 +104,7 @@ def generate_pdf():
         planche_counter += 1
 
     save_json(tracking_data, TRACKING_FILE)
-    print(f"\n🎉 Terminé ! Planches dans '{EXPORTS_DIR}'. Suivi mis à jour.")
+    print(f"\n🎉 Terminé ! Planches dans '{PLANCHES_DIR}'. Suivi mis à jour.")
 
 
 if __name__ == "__main__":

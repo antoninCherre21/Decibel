@@ -144,3 +144,42 @@ Le dossier complet est hébergé sur **GitHub Pages** et accessible directement 
 4. Flashez vos cartes imprimées. La musique ou l'extrait se lancera instantanément !
 
 > 💡 **Astuce Pro :** Sur iOS/Android, cliquez sur "Partager" puis "Ajouter à l'écran d'accueil" pour installer le jeu comme une véritable application native, sans passer par l'App Store.
+
+---
+
+### 6. 🖨️ Comment imprimer ses cartes ?
+
+Vous pouvez imprimer vous-même vos cartes physiques **sans avoir à exécuter les scripts Python**. Les planches PDF prêtes à imprimer sont disponibles directement en téléchargement depuis les **Releases GitHub** du projet.
+
+#### 📥 Télécharger les planches d'impression
+
+1. Rendez-vous sur la page des **[Releases du projet](https://github.com/antoninCherre21/Decibel/releases)**
+2. Choisissez la release correspondant au mode de jeu voulu :
+   - `mode_music_impression.zip` → 🎵 Mode Musique
+   - *(D'autres modes seront ajoutés progressivement)*
+3. Téléchargez et décompressez le fichier ZIP
+4. Vous obtenez un ensemble de fichiers PDF `planche_001.pdf`, `planche_002.pdf`, etc.
+
+> Chaque planche contient **6 cartes** (2 colonnes × 3 lignes) au format A4, avec le **recto et le verso sur des pages séparées** pour une impression recto/verso correcte.
+
+#### 🖨️ Conseils d'impression pour un résultat professionnel
+
+Pour un rendu de qualité comparable à un jeu du commerce :
+
+| Paramètre | Recommandation |
+|---|---|
+| **Format papier** | A4 |
+| **Type de papier** | Papier photo brillant 200–250 g/m² (ex: Canon, Epson, HP) |
+| **Impression** | Recto-verso automatique (ou manuel en retournant les feuilles) |
+| **Orientation** | Portrait |
+| **Mise à l'échelle** | 100% / Taille réelle (ne pas adapter à la page) |
+| **Qualité** | Haute qualité / Photo |
+
+**Étapes recommandées :**
+
+1. **Imprimer les planches** avec votre imprimante recto/verso sur papier photo.
+2. **Découper les cartes** : chaque feuille contient 6 cartes. Utilisez un massicot (ou des ciseaux) en suivant les marges.
+3. *(Optionnel mais très recommandé)* **Plastifier** les cartes à la plastifieuse (pochettes 80 ou 100 microns) pour une durabilité maximale et un beau rendu brillant.
+4. **Ranger** dans une boîte de jeu, un étui à cartes ou une pochette zip.
+
+> 💡 **Astuce** : Imprimez d'abord une seule feuille test en brouillon pour vérifier l'alignement recto/verso avant de lancer tout le lot.
