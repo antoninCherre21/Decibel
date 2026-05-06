@@ -153,11 +153,12 @@ Vous pouvez imprimer vous-même vos cartes physiques **sans avoir à exécuter l
 
 #### 📥 Télécharger les planches d'impression
 
-1. Rendez-vous sur la page des **[Releases du projet](https://github.com/antoninCherre21/Decibel/releases)**
-2. Choisissez la release correspondant au mode de jeu voulu :
-   - `mode_music_impression.zip` → 🎵 Mode Musique
-   - *(D'autres modes seront ajoutés progressivement)*
-3. Téléchargez et décompressez le fichier ZIP
+1. Rendez-vous sur la page des **[Releases du projet](https://github.com/antoninCherre21/Decibel/releases)**.
+2. Identifiez le pack qui vous convient :
+   - **Packs Complets (`-complet`)** : Contiennent l'intégralité des cartes d'un mode (ex: `music-complet`). Idéal pour une première impression.
+   - **Packs de Nouveautés (`-pack-XXX`)** : Contiennent uniquement les nouvelles cartes ajoutées depuis le pack précédent. Idéal si vous avez déjà imprimé les versions antérieures.
+   - **Pack Global (`all-complet`)** : Regroupe tous les modes de jeu en un seul fichier.
+3. Téléchargez et décompressez le fichier ZIP correspondant.
 4. Vous obtenez un ensemble de fichiers PDF `planche_001.pdf`, `planche_002.pdf`, etc.
 
 > Chaque planche contient **6 cartes** (2 colonnes × 3 lignes) au format A4, avec le **recto et le verso sur des pages séparées** pour une impression recto/verso correcte.

@@ -100,8 +100,9 @@ def main():
 
         qr_path = os.path.join(paths["qrcodes"], f"qr_{song_id}_{titre_safe}.png")
         if os.path.exists(qr_path):
-            qr_img = Image.open(qr_path).convert("RGBA").resize((330, 330))
-            recto.paste(qr_img, (CARD_SIZE[0]//2 - 165, CARD_SIZE[1]//2 - 165), qr_img)
+            QR_SIZE = 280  # Taille réduite pour économiser de la place / esthétique
+            qr_img = Image.open(qr_path).convert("RGBA").resize((QR_SIZE, QR_SIZE))
+            recto.paste(qr_img, (CARD_SIZE[0]//2 - QR_SIZE//2, CARD_SIZE[1]//2 - QR_SIZE//2), qr_img)
         recto.save(os.path.join(paths["cartes"], f"{song_id}_recto_{titre_safe}.png"))
 
         # --- VERSO ---

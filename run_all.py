@@ -45,7 +45,8 @@ def main():
         "scripts/2_Verification_BDD.py",
         "scripts/3_generer_qrcodes.py",
         "scripts/4_generer_cartes_musique.py",
-        "scripts/5_generer_planche_impression.py"
+        "scripts/5_generer_planche_impression.py",
+        "scripts/6_auto_create_release.py"
     ]
 
     for script in scripts:
