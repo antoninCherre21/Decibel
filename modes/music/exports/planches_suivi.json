@@ -1,1 +1,1008 @@
-{\"planches\": []}
+{
+    "planches": [
+        {
+            "planche": 1,
+            "fichier": "planche_001.pdf",
+            "card_ids": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "planche": 2,
+            "fichier": "planche_002.pdf",
+            "card_ids": [
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ]
+        },
+        {
+            "planche": 3,
+            "fichier": "planche_003.pdf",
+            "card_ids": [
+                12,
+                13,
+                14,
+                15,
+                16,
+                17
+            ]
+        },
+        {
+            "planche": 4,
+            "fichier": "planche_004.pdf",
+            "card_ids": [
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+            ]
+        },
+        {
+            "planche": 5,
+            "fichier": "planche_005.pdf",
+            "card_ids": [
+                24,
+                25,
+                26,
+                27,
+                28,
+                29
+            ]
+        },
+        {
+            "planche": 6,
+            "fichier": "planche_006.pdf",
+            "card_ids": [
+                30,
+                31,
+                32,
+                33,
+                34,
+                35
+            ]
+        },
+        {
+            "planche": 7,
+            "fichier": "planche_007.pdf",
+            "card_ids": [
+                36,
+                37,
+                38,
+                39,
+                40,
+                41
+            ]
+        },
+        {
+            "planche": 8,
+            "fichier": "planche_008.pdf",
+            "card_ids": [
+                42,
+                43,
+                44,
+                45,
+                46,
+                47
+            ]
+        },
+        {
+            "planche": 9,
+            "fichier": "planche_009.pdf",
+            "card_ids": [
+                48,
+                49,
+                50,
+                51,
+                52,
+                53
+            ]
+        },
+        {
+            "planche": 10,
+            "fichier": "planche_010.pdf",
+            "card_ids": [
+                54,
+                55,
+                56,
+                57,
+                58,
+                59
+            ]
+        },
+        {
+            "planche": 11,
+            "fichier": "planche_011.pdf",
+            "card_ids": [
+                60,
+                61,
+                62,
+                63,
+                64,
+                65
+            ]
+        },
+        {
+            "planche": 12,
+            "fichier": "planche_012.pdf",
+            "card_ids": [
+                66,
+                67,
+                68,
+                69,
+                70,
+                71
+            ]
+        },
+        {
+            "planche": 13,
+            "fichier": "planche_013.pdf",
+            "card_ids": [
+                72,
+                73,
+                74,
+                75,
+                76,
+                77
+            ]
+        },
+        {
+            "planche": 14,
+            "fichier": "planche_014.pdf",
+            "card_ids": [
+                78,
+                79,
+                80,
+                81,
+                82,
+                83
+            ]
+        },
+        {
+            "planche": 15,
+            "fichier": "planche_015.pdf",
+            "card_ids": [
+                84,
+                85,
+                86,
+                87,
+                88,
+                89
+            ]
+        },
+        {
+            "planche": 16,
+            "fichier": "planche_016.pdf",
+            "card_ids": [
+                90,
+                91,
+                92,
+                93,
+                94,
+                95
+            ]
+        },
+        {
+            "planche": 17,
+            "fichier": "planche_017.pdf",
+            "card_ids": [
+                96,
+                97,
+                98,
+                99,
+                100,
+                101
+            ]
+        },
+        {
+            "planche": 18,
+            "fichier": "planche_018.pdf",
+            "card_ids": [
+                102,
+                103,
+                104,
+                105,
+                106,
+                107
+            ]
+        },
+        {
+            "planche": 19,
+            "fichier": "planche_019.pdf",
+            "card_ids": [
+                108,
+                109,
+                110,
+                111,
+                112,
+                113
+            ]
+        },
+        {
+            "planche": 20,
+            "fichier": "planche_020.pdf",
+            "card_ids": [
+                114,
+                115,
+                116,
+                117,
+                118,
+                119
+            ]
+        },
+        {
+            "planche": 21,
+            "fichier": "planche_021.pdf",
+            "card_ids": [
+                120,
+                121,
+                122,
+                123,
+                124,
+                125
+            ]
+        },
+        {
+            "planche": 22,
+            "fichier": "planche_022.pdf",
+            "card_ids": [
+                126,
+                127,
+                128,
+                129,
+                130,
+                131
+            ]
+        },
+        {
+            "planche": 23,
+            "fichier": "planche_023.pdf",
+            "card_ids": [
+                132,
+                133,
+                134,
+                135,
+                136,
+                137
+            ]
+        },
+        {
+            "planche": 24,
+            "fichier": "planche_024.pdf",
+            "card_ids": [
+                138,
+                139,
+                140,
+                141,
+                142,
+                143
+            ]
+        },
+        {
+            "planche": 25,
+            "fichier": "planche_025.pdf",
+            "card_ids": [
+                144,
+                145,
+                146,
+                147,
+                148,
+                149
+            ]
+        },
+        {
+            "planche": 26,
+            "fichier": "planche_026.pdf",
+            "card_ids": [
+                150,
+                151,
+                152,
+                153,
+                154,
+                155
+            ]
+        },
+        {
+            "planche": 27,
+            "fichier": "planche_027.pdf",
+            "card_ids": [
+                156,
+                157,
+                158,
+                159,
+                160,
+                161
+            ]
+        },
+        {
+            "planche": 28,
+            "fichier": "planche_028.pdf",
+            "card_ids": [
+                162,
+                163,
+                164,
+                165,
+                166,
+                167
+            ]
+        },
+        {
+            "planche": 29,
+            "fichier": "planche_029.pdf",
+            "card_ids": [
+                168,
+                169,
+                170,
+                171,
+                172,
+                173
+            ]
+        },
+        {
+            "planche": 30,
+            "fichier": "planche_030.pdf",
+            "card_ids": [
+                174,
+                175,
+                176,
+                177,
+                178,
+                179
+            ]
+        },
+        {
+            "planche": 31,
+            "fichier": "planche_031.pdf",
+            "card_ids": [
+                180,
+                181,
+                182,
+                183,
+                184,
+                185
+            ]
+        },
+        {
+            "planche": 32,
+            "fichier": "planche_032.pdf",
+            "card_ids": [
+                186,
+                187,
+                188,
+                189,
+                190,
+                191
+            ]
+        },
+        {
+            "planche": 33,
+            "fichier": "planche_033.pdf",
+            "card_ids": [
+                192,
+                193,
+                194,
+                195,
+                196,
+                197
+            ]
+        },
+        {
+            "planche": 34,
+            "fichier": "planche_034.pdf",
+            "card_ids": [
+                198,
+                199,
+                200,
+                201,
+                202,
+                203
+            ]
+        },
+        {
+            "planche": 35,
+            "fichier": "planche_035.pdf",
+            "card_ids": [
+                204,
+                205,
+                206,
+                207,
+                208,
+                209
+            ]
+        },
+        {
+            "planche": 36,
+            "fichier": "planche_036.pdf",
+            "card_ids": [
+                210,
+                211,
+                212,
+                213,
+                214,
+                215
+            ]
+        },
+        {
+            "planche": 37,
+            "fichier": "planche_037.pdf",
+            "card_ids": [
+                216,
+                217,
+                218,
+                219,
+                220,
+                221
+            ]
+        },
+        {
+            "planche": 38,
+            "fichier": "planche_038.pdf",
+            "card_ids": [
+                222,
+                223,
+                224,
+                225,
+                226,
+                227
+            ]
+        },
+        {
+            "planche": 39,
+            "fichier": "planche_039.pdf",
+            "card_ids": [
+                228,
+                229,
+                230,
+                231,
+                232,
+                233
+            ]
+        },
+        {
+            "planche": 40,
+            "fichier": "planche_040.pdf",
+            "card_ids": [
+                234,
+                235,
+                236,
+                237,
+                238,
+                239
+            ]
+        },
+        {
+            "planche": 41,
+            "fichier": "planche_041.pdf",
+            "card_ids": [
+                240,
+                241,
+                242,
+                243,
+                244,
+                245
+            ]
+        },
+        {
+            "planche": 42,
+            "fichier": "planche_042.pdf",
+            "card_ids": [
+                246,
+                247,
+                248,
+                249,
+                250,
+                251
+            ]
+        },
+        {
+            "planche": 43,
+            "fichier": "planche_043.pdf",
+            "card_ids": [
+                252,
+                253,
+                254,
+                255,
+                256,
+                257
+            ]
+        },
+        {
+            "planche": 44,
+            "fichier": "planche_044.pdf",
+            "card_ids": [
+                258,
+                259,
+                260,
+                261,
+                262,
+                263
+            ]
+        },
+        {
+            "planche": 45,
+            "fichier": "planche_045.pdf",
+            "card_ids": [
+                264,
+                265,
+                266,
+                267,
+                268,
+                269
+            ]
+        },
+        {
+            "planche": 46,
+            "fichier": "planche_046.pdf",
+            "card_ids": [
+                270,
+                271,
+                272,
+                273,
+                274,
+                275
+            ]
+        },
+        {
+            "planche": 47,
+            "fichier": "planche_047.pdf",
+            "card_ids": [
+                276,
+                277,
+                278,
+                279,
+                280,
+                281
+            ]
+        },
+        {
+            "planche": 48,
+            "fichier": "planche_048.pdf",
+            "card_ids": [
+                282,
+                283,
+                284,
+                285,
+                286,
+                287
+            ]
+        },
+        {
+            "planche": 49,
+            "fichier": "planche_049.pdf",
+            "card_ids": [
+                288,
+                289,
+                290,
+                291,
+                292,
+                293
+            ]
+        },
+        {
+            "planche": 50,
+            "fichier": "planche_050.pdf",
+            "card_ids": [
+                294,
+                295,
+                296,
+                297,
+                298,
+                299
+            ]
+        },
+        {
+            "planche": 51,
+            "fichier": "planche_051.pdf",
+            "card_ids": [
+                300,
+                301,
+                302,
+                303,
+                304,
+                305
+            ]
+        },
+        {
+            "planche": 52,
+            "fichier": "planche_052.pdf",
+            "card_ids": [
+                306,
+                307,
+                308,
+                309,
+                310,
+                311
+            ]
+        },
+        {
+            "planche": 53,
+            "fichier": "planche_053.pdf",
+            "card_ids": [
+                312,
+                313,
+                314,
+                315,
+                316,
+                317
+            ]
+        },
+        {
+            "planche": 54,
+            "fichier": "planche_054.pdf",
+            "card_ids": [
+                318,
+                319,
+                320,
+                321,
+                322,
+                323
+            ]
+        },
+        {
+            "planche": 55,
+            "fichier": "planche_055.pdf",
+            "card_ids": [
+                324,
+                325,
+                326,
+                327,
+                328,
+                329
+            ]
+        },
+        {
+            "planche": 56,
+            "fichier": "planche_056.pdf",
+            "card_ids": [
+                330,
+                331,
+                332,
+                333,
+                334,
+                335
+            ]
+        },
+        {
+            "planche": 57,
+            "fichier": "planche_057.pdf",
+            "card_ids": [
+                336,
+                337,
+                338,
+                339,
+                340,
+                341
+            ]
+        },
+        {
+            "planche": 58,
+            "fichier": "planche_058.pdf",
+            "card_ids": [
+                342,
+                343,
+                344,
+                345,
+                346,
+                347
+            ]
+        },
+        {
+            "planche": 59,
+            "fichier": "planche_059.pdf",
+            "card_ids": [
+                348,
+                349,
+                350,
+                351,
+                352,
+                353
+            ]
+        },
+        {
+            "planche": 60,
+            "fichier": "planche_060.pdf",
+            "card_ids": [
+                354,
+                355,
+                356,
+                357,
+                358,
+                359
+            ]
+        },
+        {
+            "planche": 61,
+            "fichier": "planche_061.pdf",
+            "card_ids": [
+                360,
+                361,
+                362,
+                363,
+                364,
+                365
+            ]
+        },
+        {
+            "planche": 62,
+            "fichier": "planche_062.pdf",
+            "card_ids": [
+                366,
+                367,
+                368,
+                369,
+                370,
+                371
+            ]
+        },
+        {
+            "planche": 63,
+            "fichier": "planche_063.pdf",
+            "card_ids": [
+                372,
+                373,
+                374,
+                375,
+                376,
+                377
+            ]
+        },
+        {
+            "planche": 64,
+            "fichier": "planche_064.pdf",
+            "card_ids": [
+                378,
+                379,
+                380,
+                381,
+                382,
+                383
+            ]
+        },
+        {
+            "planche": 65,
+            "fichier": "planche_065.pdf",
+            "card_ids": [
+                384,
+                385,
+                386,
+                387,
+                388,
+                389
+            ]
+        },
+        {
+            "planche": 66,
+            "fichier": "planche_066.pdf",
+            "card_ids": [
+                390,
+                391,
+                392,
+                393,
+                394,
+                395
+            ]
+        },
+        {
+            "planche": 67,
+            "fichier": "planche_067.pdf",
+            "card_ids": [
+                396,
+                397,
+                398,
+                399,
+                400,
+                401
+            ]
+        },
+        {
+            "planche": 68,
+            "fichier": "planche_068.pdf",
+            "card_ids": [
+                402,
+                403,
+                404,
+                405,
+                406,
+                407
+            ]
+        },
+        {
+            "planche": 69,
+            "fichier": "planche_069.pdf",
+            "card_ids": [
+                408,
+                409,
+                410,
+                411,
+                412,
+                413
+            ]
+        },
+        {
+            "planche": 70,
+            "fichier": "planche_070.pdf",
+            "card_ids": [
+                414,
+                415,
+                416,
+                417,
+                418,
+                419
+            ]
+        },
+        {
+            "planche": 71,
+            "fichier": "planche_071.pdf",
+            "card_ids": [
+                420,
+                421,
+                422,
+                423,
+                424,
+                425
+            ]
+        },
+        {
+            "planche": 72,
+            "fichier": "planche_072.pdf",
+            "card_ids": [
+                426,
+                427,
+                428,
+                429,
+                430,
+                431
+            ]
+        },
+        {
+            "planche": 73,
+            "fichier": "planche_073.pdf",
+            "card_ids": [
+                432,
+                433,
+                434,
+                435,
+                436,
+                437
+            ]
+        },
+        {
+            "planche": 74,
+            "fichier": "planche_074.pdf",
+            "card_ids": [
+                438,
+                439,
+                440,
+                441,
+                442,
+                443
+            ]
+        },
+        {
+            "planche": 75,
+            "fichier": "planche_075.pdf",
+            "card_ids": [
+                444,
+                445,
+                446,
+                447,
+                448,
+                449
+            ]
+        },
+        {
+            "planche": 76,
+            "fichier": "planche_076.pdf",
+            "card_ids": [
+                450,
+                451,
+                452,
+                453,
+                454,
+                455
+            ]
+        },
+        {
+            "planche": 77,
+            "fichier": "planche_077.pdf",
+            "card_ids": [
+                456,
+                457,
+                458,
+                459,
+                460,
+                461
+            ]
+        },
+        {
+            "planche": 78,
+            "fichier": "planche_078.pdf",
+            "card_ids": [
+                462,
+                463,
+                464,
+                465,
+                466,
+                467
+            ]
+        },
+        {
+            "planche": 79,
+            "fichier": "planche_079.pdf",
+            "card_ids": [
+                468,
+                469,
+                470,
+                471,
+                472,
+                473
+            ]
+        },
+        {
+            "planche": 80,
+            "fichier": "planche_080.pdf",
+            "card_ids": [
+                474,
+                475,
+                476,
+                477,
+                478,
+                479
+            ]
+        },
+        {
+            "planche": 81,
+            "fichier": "planche_081.pdf",
+            "card_ids": [
+                480,
+                481,
+                482,
+                483,
+                484,
+                485
+            ]
+        },
+        {
+            "planche": 82,
+            "fichier": "planche_082.pdf",
+            "card_ids": [
+                486,
+                487,
+                488,
+                489,
+                490,
+                491
+            ]
+        },
+        {
+            "planche": 83,
+            "fichier": "planche_083.pdf",
+            "card_ids": [
+                492,
+                493,
+                494,
+                495,
+                496,
+                497
+            ]
+        },
+        {
+            "planche": 84,
+            "fichier": "planche_084.pdf",
+            "card_ids": [
+                498,
+                499
+            ]
+        }
+    ]
+}
