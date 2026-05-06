@@ -11,6 +11,10 @@ modes/*/assets/pochettes/
 modes/*/exports/qrcodes/
 modes/*/exports/cartes/
 modes/*/cartes_chances/
+modes/*/exports/planches/*.pdf
+
+# Packs de release (ZIP) — stockés sur l'onglet Releases de GitHub, pas dans le repo
+*.zip
 
 # Fichier temporaire de travail entre le script 0 et le script 1
 # ATTENTION : ce fichier est intermédiaire, gardé en local pour sécurité
