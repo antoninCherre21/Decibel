@@ -24,6 +24,8 @@ modes/*/exports/planches/*.pdf
 # Dossier temporaire de prévisualisation des pochettes
 temp_pochettes/
 
+todo_list.txt
+
 # =============================================================
 
 # Byte-compiled / optimized / DLL files
