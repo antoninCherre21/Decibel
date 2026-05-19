@@ -12,7 +12,7 @@ def generate_pdf():
     mode = args.mode
     paths = get_paths(mode)
     INPUT_DIR = paths["cartes"]
-    PLANCHES_DIR = paths["planches"]
+    PLANCHES_DIR = paths["planches_extraits"]
     TRACKING_FILE = paths["planches_suivi"]
 
     os.makedirs(PLANCHES_DIR, exist_ok=True)

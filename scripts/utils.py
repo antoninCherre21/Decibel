@@ -29,9 +29,14 @@ def get_paths(mode: str) -> dict:
         "exports": os.path.join(mode_dir, "exports"),
         "qrcodes": os.path.join(mode_dir, "exports", "qrcodes"),
         "cartes": os.path.join(mode_dir, "exports", "cartes"),
-        "planches": os.path.join(mode_dir, "exports", "planches"),  # PDFs d'impression
+        "planches": os.path.join(mode_dir, "exports", "planches"),  # Dossier parent
+        "planches_extraits": os.path.join(mode_dir, "exports", "planches", "extraits"),
+        "planches_chances": os.path.join(mode_dir, "exports", "planches", "chances"),
         "planches_suivi": os.path.join(mode_dir, "exports", "planches_suivi.json"),
         "img": os.path.join(mode_dir, "img"),  # Ressources statiques du mode (templates, logos)
+        "cartes_chances": os.path.join(mode_dir, "exports", "cartes_chances"),
+        "db_chances": os.path.join(mode_dir, "db_cartes_chances.json"),
+
     }
 
 

@@ -4,7 +4,7 @@ const urlsToCache = [
   '/Decibel/index.html',
   '/Decibel/webapp/scanner.html',
   '/Decibel/webapp/manifest.json',
-  '/Decibel/webapp/img/icon-512x512.png',
+  '/Decibel/webapp/img/LOGO.png',
   'https://unpkg.com/html5-qrcode'
 ];
 

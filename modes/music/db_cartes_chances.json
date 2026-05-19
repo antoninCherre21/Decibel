@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "titre": "Seconde Chance",
+        "description": "L'Extrait ne vous inspire pas ? Défaussez-le et piochez-en un nouveau !",
+        "logo": "1_seconde_chance.png"
+    },
+    {
+        "id": 2,
+        "titre": "Indice Décennie",
+        "description": "Un doute sur l'année de l'Extrait ? Demandez au Maître du jeu de vous révéler la décennie !",
+        "logo": "2_indice_décennie.png"
+    },
+    {
+        "id": 3,
+        "titre": "Libre Choix",
+        "description": "Envie de changer d'ambiance ? Choisissez le genre musical de votre prochain Extrait !",
+        "logo": "3_libre_choix.png"
+    },
+    {
+        "id": 4,
+        "titre": "Recyclage",
+        "description": "Vous vous sentez chanceux ? Jouez un Extrait au hasard depuis la défausse !",
+        "logo": ""
+    },
+    {
+        "id": 5,
+        "titre": "Le Pari",
+        "description": "Sûr de vous ? Pariez sur la réussite ou l'échec d'une équipe adverse. Si vous gagnez, rejouez un tour !",
+        "logo": ""
+    },
+    {
+        "id": 6,
+        "titre": "Combo",
+        "description": "Sur une bonne lancée ? Votre équipe joue immédiatement un second tour !",
+        "logo": ""
+    },
+    {
+        "id": 7,
+        "titre": "Joker Bonus",
+        "description": "Artiste et titre corrects ? Gardez l'Extrait !",
+        "logo": ""
+    },
+    {
+        "id": 8,
+        "titre": "Bouclier",
+        "description": "Gardez cette carte devant vous. Elle annulera le prochain malus qui vous cible !",
+        "logo": ""
+    },
+    {
+        "id": 9,
+        "titre": "Le Jeton",
+        "description": "Une équipe adverse se trompe ? Intervenez et placez l'Extrait au bon endroit pour le voler !",
+        "logo": ""
+    },
+    {
+        "id": 10,
+        "titre": "Double Chance",
+        "description": "L'Extrait vous fait hésiter ? Désignez deux emplacements possibles sur votre frise pour tenter de le valider !",
+        "logo": ""
+    },
+    {
+        "id": 11,
+        "titre": "Sabotage",
+        "description": "Envie de corser le jeu ? Imposez le genre musical du prochain Extrait d'une équipe adverse !",
+        "logo": ""
+    },
+    {
+        "id": 12,
+        "titre": "Avance Rapide",
+        "description": "Pas de temps à perdre. L'équipe adverse de votre choix écoute son prochain Extrait en vitesse x2 !",
+        "logo": ""
+    },
+    {
+        "id": 13,
+        "titre": "Silence Radio",
+        "description": "C'est une évidence ? L'équipe adverse de votre choix n'aura droit qu'aux 5 premières secondes de l'Extrait !",
+        "logo": ""
+    },
+    {
+        "id": 14,
+        "titre": "Pickpocket",
+        "description": "Besoin d'un coup de main ? Volez une carte Chance au hasard dans la main d'une équipe adverse !",
+        "logo": ""
+    },
+    {
+        "id": 15,
+        "titre": "Zapping",
+        "description": "Une équipe vous semble trop sûre d'elle ? Interrompez-la et forcez-la à défausser son Extrait pour en jouer un nouveau !",
+        "logo": ""
+    },
+    {
+        "id": 16,
+        "titre": "Memory",
+        "description": "L'équipe de votre choix retourne sa frise face cachée. Elle doit placer son prochain Extrait de mémoire !",
+        "logo": ""
+    },
+    {
+        "id": 17,
+        "titre": "Main de Fer",
+        "description": "Une équipe adverse prend la tête ? Imposez-lui de jouer un Extrait de niveau \"Difficile\" !",
+        "logo": ""
+    },
+    {
+        "id": 18,
+        "titre": "Valse des Temps",
+        "description": "Une équipe prend trop d'avance ? Retirez la carte de votre choix de sa frise et envoyez-la dans la défausse !",
+        "logo": ""
+    }
+]

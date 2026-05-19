@@ -157,8 +157,8 @@ Ce pack regroupe **tous les modes de jeu** en un seul téléchargement.
 def process_mode(mode, dry_run=False, complete_only=False):
     """Traite un mode : pack incrémental + pack complet."""
     paths = get_paths(mode)
-    planches_dir = paths["planches"]
-
+    planches_dir = paths.get("planches_extraits", os.path.join(paths["planches"], "extraits"))
+    planches_chances_dir = paths.get("planches_chances", os.path.join(paths["planches"], "chances"))
     tracking = load_json(paths["planches_suivi"], default={"planches": [], "release_packs": []})
     all_planches = tracking.get("planches", [])
     release_packs = tracking.get("release_packs", [])
@@ -214,8 +214,16 @@ def process_mode(mode, dry_run=False, complete_only=False):
     if available:
         tag_c = f"{mode}-complet"
         title_c = f"🎵 {mode.capitalize()} — Pack Complet ({total_cards} cartes)"
-        zip_c = os.path.join(planches_dir, f"pack_complet_{mode}.zip")
-        make_zip([p[1] for p in available], zip_c)
+        zip_c = os.path.join(paths["planches"], f"pack_complet_{mode}.zip")
+        
+        all_pdfs = [p[1] for p in available]
+        # Ajouter les planches chances s'il y en a
+        if os.path.exists(planches_chances_dir):
+            for f in os.listdir(planches_chances_dir):
+                if f.endswith(".pdf"):
+                    all_pdfs.append(os.path.join(planches_chances_dir, f))
+                    
+        make_zip(all_pdfs, zip_c)
 
         print(f"\n  ▶ Mise à jour pack complet : {tag_c}")
         ok = publish_release(tag_c, title_c,
@@ -237,13 +245,20 @@ def process_all_modes(dry_run=False):
     for mode in modes:
         paths = get_paths(mode)
         tracking = load_json(paths["planches_suivi"], default={"planches": []})
-        planches_dir = paths["planches"]
+        planches_dir = paths.get("planches_extraits", os.path.join(paths["planches"], "extraits"))
+        planches_chances_dir = paths.get("planches_chances", os.path.join(paths["planches"], "chances"))
         total = 0
         for p in tracking.get("planches", []):
             pdf_path = os.path.join(planches_dir, p["fichier"])
             if os.path.exists(pdf_path):
                 all_pdfs.append(pdf_path)
                 total += len(p.get("card_ids", []))
+        
+        if os.path.exists(planches_chances_dir):
+            for f in os.listdir(planches_chances_dir):
+                if f.endswith(".pdf"):
+                    all_pdfs.append(os.path.join(planches_chances_dir, f))
+
         summary.append((mode, total))
 
     if not all_pdfs:

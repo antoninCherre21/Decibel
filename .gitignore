@@ -10,8 +10,10 @@ modes/*/assets/pochettes/
 # Exports générés (QR codes et cartes) — régénérables à la demande
 modes/*/exports/qrcodes/
 modes/*/exports/cartes/
+modes/*/exports/cartes_chances/
 modes/*/cartes_chances/
-modes/*/exports/planches/*.pdf
+modes/*/exports/planches/extraits/*.pdf
+modes/*/exports/planches/chances/*.pdf
 
 # Packs de release (ZIP) — stockés sur l'onglet Releases de GitHub, pas dans le repo
 *.zip
@@ -25,6 +27,8 @@ modes/*/exports/planches/*.pdf
 temp_pochettes/
 
 todo_list.txt
+test_impression.odg
+.~lock.test_impression.odg#
 
 # =============================================================
 

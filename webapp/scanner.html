@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <!-- PWA Meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f172a">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="img/icon-512x512.png">
-    
+    <link rel="apple-touch-icon" href="img/LOGO.png">
+
     <title>Décibel - Scanner</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
@@ -25,7 +26,8 @@
             --text-muted: #94a3b8;
         }
 
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -69,7 +71,10 @@
         /* Loading Screen */
         #loading-screen {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -91,10 +96,16 @@
             flex: 1;
             background: black;
         }
-        
+
         /* Personnalisation du scanner HTML5-qrcode */
-        #reader__dashboard_section_csr span { color: var(--text-main) !important; }
-        #reader__dashboard_section_swaplink { color: var(--primary) !important; }
+        #reader__dashboard_section_csr span {
+            color: var(--text-main) !important;
+        }
+
+        #reader__dashboard_section_swaplink {
+            color: var(--primary) !important;
+        }
+
         #reader button {
             background: var(--primary);
             color: white;
@@ -136,8 +147,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .cover-art {
@@ -145,13 +163,22 @@
             height: 200px;
             border-radius: 16px;
             margin: 0 auto 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             object-fit: cover;
             display: block;
         }
 
-        .song-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 5px; }
-        .song-artist { font-size: 1.1rem; color: var(--text-muted); margin: 0 0 20px; }
+        .song-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 5px;
+        }
+
+        .song-artist {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin: 0 0 20px;
+        }
 
         audio {
             width: 100%;
@@ -174,24 +201,48 @@
             box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
             transition: transform 0.2s;
         }
-        .btn-next:active { transform: scale(0.95); }
+
+        .btn-next:active {
+            transform: scale(0.95);
+        }
 
         .spinner {
-            display: flex; gap: 8px; margin-top: 20px;
-        }
-        .dot {
-            width: 12px; height: 12px; background-color: var(--primary);
-            border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
         }
 
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -203,7 +254,9 @@
         <div id="loading-screen">
             <h2>Chargement de la base de données...</h2>
             <div class="spinner">
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
             <p id="loading-error" style="color: #ef4444; display: none; margin-top: 20px;"></p>
         </div>
@@ -219,9 +272,9 @@
                 <img id="player-cover" class="cover-art" src="" alt="Pochette">
                 <h2 id="player-title" class="song-title">Titre</h2>
                 <p id="player-artist" class="song-artist">Artiste</p>
-                
+
                 <div id="audio-container"></div>
-                
+
                 <button class="btn-next" onclick="restartScanner()">Scanner une autre carte</button>
             </div>
         </div>
@@ -232,7 +285,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const currentMode = urlParams.get('mode') || 'music'; // Mode par défaut
         const DB_URL = `../modes/${currentMode}/db.json`;
-        
+
         let playlistData = [];
         let html5QrcodeScanner = null;
 
@@ -240,7 +293,7 @@
         const loadingScreen = document.getElementById('loading-screen');
         const scannerScreen = document.getElementById('scanner-screen');
         const playerScreen = document.getElementById('player-screen');
-        
+
         const playerCover = document.getElementById('player-cover');
         const playerTitle = document.getElementById('player-title');
         const playerArtist = document.getElementById('player-artist');
@@ -261,10 +314,10 @@
             try {
                 const response = await fetch(DB_URL);
                 if (!response.ok) throw new Error("Base de données introuvable");
-                
+
                 playlistData = await response.json();
                 console.log(`Base de données chargée: ${playlistData.length} éléments.`);
-                
+
                 // Masquer le chargement et afficher le scanner
                 loadingScreen.style.display = 'none';
                 startScanner();
@@ -279,15 +332,15 @@
         function startScanner() {
             playerScreen.style.display = 'none';
             scannerScreen.style.display = 'flex';
-            
+
             // On vide l'audio pour éviter qu'il continue de jouer
             audioContainer.innerHTML = '';
 
             if (!html5QrcodeScanner) {
                 // Configuration du scanner pour utiliser la caméra arrière par défaut
                 html5QrcodeScanner = new Html5QrcodeScanner(
-                    "reader", 
-                    { fps: 10, qrbox: {width: 250, height: 250}, aspectRatio: 1.0 }, 
+                    "reader",
+                    { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 },
                     /* verbose= */ false
                 );
             }
@@ -302,13 +355,13 @@
         function onScanSuccess(decodedText, decodedResult) {
             // Un scan réussi !
             console.log(`Scan réussi: ${decodedText}`);
-            
+
             // Format attendu: "music_123" ou "movies_45"
             const expectedPrefix = currentMode + "_";
-            
+
             if (decodedText.startsWith(expectedPrefix)) {
                 const musicId = decodedText.split("_")[1];
-                
+
                 // Mettre le scanner en pause / l'arrêter
                 html5QrcodeScanner.clear().then(() => {
                     playMusic(musicId);
@@ -344,7 +397,7 @@
             if (song) {
                 playerTitle.innerText = song.Titre || "Titre inconnu";
                 playerArtist.innerText = song.Artiste || "Artiste inconnu";
-                playerCover.src = song.local_artwork_path || "img/icon-512x512.png"; // Fallback image
+                playerCover.src = song.local_artwork_path || "img/LOGO.png"; // Fallback image
 
                 const audioSrc = song.local_preview_path;
                 const itunesSrc = song.preview_url_itunes;
@@ -359,7 +412,7 @@
             } else {
                 playerTitle.innerText = "Erreur";
                 playerArtist.innerText = `Musique ID ${id} introuvable`;
-                playerCover.src = "img/icon-512x512.png";
+                playerCover.src = "img/LOGO.png";
                 audioContainer.innerHTML = '';
             }
         }
@@ -369,4 +422,5 @@
 
     </script>
 </body>
+
 </html>
